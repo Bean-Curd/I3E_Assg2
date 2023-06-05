@@ -12,7 +12,7 @@ using TMPro; //For TextMeshPro
 
 public class ASG1 : MonoBehaviour
 {
-    /*
+    
     /// <summary>
     /// New vector with (0,0,0), for WASD movement
     /// </summary>
@@ -165,7 +165,7 @@ public class ASG1 : MonoBehaviour
     /// What happens when you enter an object
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(gameObject.name + " Enter " + collision.gameObject.name);
 
@@ -441,6 +441,6 @@ public class ASG1 : MonoBehaviour
         /// </summary>
         head.rotation =
             Quaternion.Euler(rot);
-    }*/
+    }
 }
     
