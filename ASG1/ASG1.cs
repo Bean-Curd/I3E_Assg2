@@ -12,6 +12,7 @@ using TMPro; //For TextMeshPro
 
 public class ASG1 : MonoBehaviour
 {
+    /*
     /// <summary>
     /// New vector with (0,0,0), for WASD movement
     /// </summary>
@@ -440,5 +441,6 @@ public class ASG1 : MonoBehaviour
         /// </summary>
         head.rotation =
             Quaternion.Euler(rot);
-    }
+    }*/
 }
+    
