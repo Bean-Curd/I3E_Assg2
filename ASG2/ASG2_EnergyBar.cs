@@ -52,7 +52,7 @@ public class ASG2_EnergyBar : MonoBehaviour
     {
         if (currentEnergy - amount >= 0) //If there is enough energy to sprint, deduct the energy required to sprint
         {
-            ASG2.instance.moveSpeed = 0.4f; //Increase movement speed if player can sprint
+            ASG2.instance.moveSpeed = 0.25f; //Increase movement speed if player can sprint
             currentEnergy -= amount;
             energyBar.value = currentEnergy;
 
