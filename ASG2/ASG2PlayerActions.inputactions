@@ -1,5 +1,5 @@
 {
-    "name": "ASG1PlayerActions",
+    "name": "ASG2PlayerActions",
     "maps": [
         {
             "name": "Player",
@@ -39,6 +39,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShiftKey",
+                    "type": "Button",
+                    "id": "9b1316c2-afd3-47f7-adda-3ab3b222dd4c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -271,6 +280,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "SpaceKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e9d6bcb-a2a9-4d31-b79e-7228a21eeece",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShiftKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem; //For movement
-using TMPro; //For TextMeshPro
+//using TMPro; //For TextMeshPro
 
 public class ASG2 : MonoBehaviour
 {
@@ -43,91 +43,22 @@ public class ASG2 : MonoBehaviour
     bool onFloor;
 
     /// <summary>
-    /// Text for score
-    /// </summary>
-    public TextMeshProUGUI displayText;
-
-    /// <summary>
-    /// Text for number of collectibles
-    /// </summary>
-    public TextMeshProUGUI collectText;
-
-    /// <summary>
-    /// Number of collectibles
-    /// </summary>
-    int collectNum = 45; //3 keycards, 26 coins, 10 bars, 6 chests -> Total 45
-
-    /// <summary>
-    /// How many keycards collected/what doors can open
-    /// </summary>
-    public int accesslvl = 0;
-
-    /// <summary>
-    /// Total Score
-    /// </summary>
-    int score = 0;
-
-    /// <summary>
-    /// Score of collectibles
-    /// </summary>
-    public int keycard1 = 10; //Blue Keycard
-    public int keycard2 = 10; //Orange Keycard
-    public int keycard3 = 10; //Red Keycard
-    public int obj1 = 5; //Obj1 is coins
-    public int obj2 = 10; //Obj2 is gold bars
-    public int obj3 = 20; //Obj3 is a chest
-    public int bird = -5; //Bird deducts points
-
-    /// <summary>
-    /// Congratulations message after collecting all collectibles
-    /// </summary>
-    public GameObject congrats;
-
-    /// <summary>
-    /// Message at start of game
-    /// </summary>
-    public GameObject introDisplay;
-
-    /// <summary>
-    /// Message when interacting with pushable object
-    /// </summary>
-    public GameObject pushAlertDisplay;
-
-    /// <summary>
-    /// Message when entering bird area
-    /// </summary>
-    public GameObject birdWarnDisplay;
-
-    /// <summary>
-    /// Message when keycard 1/2/3 are obtained
-    /// </summary>
-    public GameObject card1Got;
-    public GameObject card2Got;
-    public GameObject card3Got;
-
-    /// <summary>
-    /// Message when door is locked
-    /// </summary>
-    public GameObject doorLocked;
-
-    /// <summary>
-    /// Door that requires Keycard1/2/3
-    /// </summary>
-    public GameObject hj1;
-    public GameObject hj2;
-    public GameObject hj3;
-
-    /// <summary>
     /// Choose the camera for the head so it can rotate the camera instead of the whole body
     /// </summary>
     public Transform head;
+
+    public static ASG2 instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        collectText.text = "Remaining Collectibles: " + collectNum; //Print number of collectibles at the start
-        displayText.text = "Score: 0"; //Set score to 0 at the start
+      
     }
 
     /// <summary>
@@ -167,153 +98,6 @@ public class ASG2 : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(gameObject.name + " Enter " + collision.gameObject.name);
-
-        if (collision.gameObject.tag == "Keycard1") //If it is Keycard1, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            card1Got.SetActive(true); //Display to show keycard1 has been obtained
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += keycard1;
-            displayText.text = "Score: " + score;
-            accesslvl += 1;
-        }
-
-        else if (collision.gameObject.tag == "Keycard2") //If it is Keycard2, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            card2Got.SetActive(true); //Display to show keycard2 has been obtained
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += keycard2;
-            displayText.text = "Score: " + score;
-            accesslvl += 1;
-        }
-
-        else if (collision.gameObject.tag == "Keycard3") //If it is Keycard3, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            card3Got.SetActive(true); //Display to show keycard3 has been obtained
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += keycard3;
-            displayText.text = "Score: " + score;
-            accesslvl += 1;
-        }
-
-        else if (collision.gameObject.tag == "Obj1") //If it is Obj1, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += obj1;
-            displayText.text = "Score: " + score;
-        }
-
-        else if (collision.gameObject.tag == "Obj2") //If it is Obj2, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += obj2;
-            displayText.text = "Score: " + score;
-        }
-
-        else if (collision.gameObject.tag == "Obj3") //If it is Obj3, destroy it and add its points
-        {
-            Destroy(collision.gameObject);
-            collectNum -= 1;
-            collectText.text = "Remaining Collectibles: " + collectNum;
-            score += obj3;
-            displayText.text = "Score: " + score;
-        }
-
-        if (collectNum == 0) //If all collectibles are collected, display congrats message
-        {
-            congrats.SetActive(true);
-        }
-
-        if (collision.gameObject.tag == "Bird") //If touching a bird, -3 point
-        {
-            score += bird;
-
-            if (score <= 0) //If score is less than or equal to 0, keep score at 0
-            {
-                score = 0;
-            }
-
-            displayText.text = "Score: " + score;
-        }
-
-
-        if (collision.gameObject.tag == "Intro") //At start of the game, display intro
-        {
-            introDisplay.SetActive(true);
-        }
-
-        if (collision.gameObject.tag == "Push") //If near interactable, display message
-        {
-            pushAlertDisplay.SetActive(true);
-        }
-
-        if (collision.gameObject.tag == "BirdWarn") //If entering the area with birds, display warning
-        {
-            birdWarnDisplay.SetActive(true);
-        }
-
-        if (collision.gameObject.tag == "Door1") //If object is a door requiring keycard1, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl == 0)
-            {
-                doorLocked.SetActive(true); //Show door locked message
-
-            }
-            if (accesslvl >= 1)
-            {
-                HingeJoint hinge = hj1.GetComponent<HingeJoint>(); //Get the limits from the door
-
-                JointLimits limits = hinge.limits; //Change the limits so the door can move
-                limits.min = -90;
-                limits.max = 90;
-                hinge.limits = limits; //To apply the limits :/
-            }
-        }
-
-        if (collision.gameObject.tag == "Door2") //If object is a door requiring keycard2, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl <= 1)
-            {
-                doorLocked.SetActive(true); //Show door locked message
-
-            }
-            if (accesslvl >= 2)
-            {
-                HingeJoint hinge = hj2.GetComponent<HingeJoint>(); //Get the limits from the door
-
-                JointLimits limits = hinge.limits; //Change the limits so the door can move
-                limits.min = -90;
-                limits.max = 90;
-                hinge.limits = limits; //To apply the limits :/
-            }
-        }
-
-        if (collision.gameObject.tag == "Door3") //If object is a door requiring keycard3, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl <= 2)
-            {
-                doorLocked.SetActive(true); //Show door locked message
-
-            }
-            if (accesslvl >= 3)
-            {
-                HingeJoint hinge = hj3.GetComponent<HingeJoint>(); //Get the limits from the door
-
-                JointLimits limits = hinge.limits; //Change the limits so the door can move
-                limits.min = -90;
-                limits.max = 90;
-                hinge.limits = limits; //To apply the limits :/
-            }
-        }
     }
 
     /// <summary>
@@ -333,48 +117,6 @@ public class ASG2 : MonoBehaviour
         //Debug.Log(gameObject.name + " Exit " + collision.gameObject.name);
 
         onFloor = false; //Once player is off an object they are no longer touching floor
-
-        if (collision.gameObject.tag == "Door1") //If object is a door requiring keycard1, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl == 0)
-            {
-                doorLocked.SetActive(false); //Hide door locked message once you stop touching the door
-            }
-        }
-
-        if (collision.gameObject.tag == "Door2") //If object is a door requiring keycard2, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl <= 1)
-            {
-                doorLocked.SetActive(false); //Hide door locked message once you stop touching the door
-            }
-        }
-
-        if (collision.gameObject.tag == "Door3") //If object is a door requiring keycard3, unlock position so it can open depending on the accesslvl
-        {
-            if (accesslvl <= 2)
-            {
-                doorLocked.SetActive(false); //Hide door locked message once you stop touching the door
-            }
-        }
-
-        if (collision.gameObject.tag == "Intro") //Once player starts moving around, stop intro display
-        {
-            introDisplay.SetActive(false);
-            Destroy(collision.gameObject); //So it doesn't trigger again
-        }
-
-        if (collision.gameObject.tag == "Push") //If moving out of block range, remove display
-        {
-            pushAlertDisplay.SetActive(false);
-            Destroy(collision.gameObject); //So it doesn't trigger again
-        }
-
-        if (collision.gameObject.tag == "BirdWarn") //If moving out of initial bird area, remove display
-        {
-            birdWarnDisplay.SetActive(false);
-            Destroy(collision.gameObject); //So it doesn't trigger again
-        }
     }
 
     // Update is called once per frame
@@ -385,6 +127,16 @@ public class ASG2 : MonoBehaviour
             GetComponent<Rigidbody>().AddForce(new Vector3(0, 5, 0), ForceMode.Impulse);
             onFloor = false; //Prevents player from jumping immediately after
             jump = false; //Resets jump
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift)) //If left shift is pressed, decrease energy bar
+        {
+            ASG2_EnergyBar.instance.Sprint(20);
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift)) //If left shift is lifted, reset movement speed
+        {
+            moveSpeed = 0.11f;
         }
 
         /// <summary>
@@ -406,8 +158,7 @@ public class ASG2 : MonoBehaviour
         /// <summary>
         /// For the player to rotate
         /// </summary>
-        transform.rotation =
-            Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, rotationInput.y) * rotationSpeed);
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, rotationInput.y) * rotationSpeed);
 
         /// <summary>
         /// Setting limits so the camera can rotate like how a head would
@@ -438,7 +189,6 @@ public class ASG2 : MonoBehaviour
         /// <summary>
         /// Applying the limits to the head rotation
         /// </summary>
-        head.rotation =
-            Quaternion.Euler(rot);
+        head.rotation = Quaternion.Euler(rot);
     }
 }
