@@ -1,3 +1,9 @@
+/*
+ * Author: Ashley Goh Yu Ting
+ * Date: 17/06/2023
+ * Description: I3E/STLD Assignment 2 - Energy Bar
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +36,9 @@ public class ASG2_EnergyBar : MonoBehaviour
     /// </summary>
     private Coroutine regen;
 
+    /// <summary>
+    /// So it can be accessed by other scripts
+    /// </summary>
     public static ASG2_EnergyBar instance;
 
     private void Awake()
