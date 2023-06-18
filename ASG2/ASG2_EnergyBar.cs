@@ -73,7 +73,7 @@ public class ASG2_EnergyBar : MonoBehaviour
     /// </summary>
     private IEnumerator RegenEnergy()
     {
-        yield return new WaitForSeconds(2); //Delay before energy is regenerated
+        yield return new WaitForSeconds(1); //Delay before energy is regenerated
 
         while(currentEnergy < maxEnergy) //While not at max energy, restore energy by 2 (200 as in 2.00)
         {
