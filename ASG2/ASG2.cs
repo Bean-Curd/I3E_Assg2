@@ -91,6 +91,11 @@ public class ASG2 : MonoBehaviour
         }
     }
 
+    /*void OnFire()
+    {
+        ASG2_HealthBar.instance.Damage(1000);
+    }*/
+
     /// <summary>
     /// What happens when you enter an object
     /// </summary>

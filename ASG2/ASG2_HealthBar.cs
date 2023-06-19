@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; //For the UI 
+using TMPro; //For TextMeshPro
 
 public class ASG2_HealthBar : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class ASG2_HealthBar : MonoBehaviour
     /// For the player's health
     /// </summary>
     private int currentHealth;
+
+    /// <summary>
+    /// Text for health
+    /// </summary>
+    public TextMeshProUGUI healthText;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -65,6 +71,12 @@ public class ASG2_HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentHealth <= 10000)
+        {
+            healthText.text = "" + (currentHealth / 100); //Change the text to the number
+        } else
+        {
+            healthText.text = "100"; //Change the text to the number
+        }
     }
 }

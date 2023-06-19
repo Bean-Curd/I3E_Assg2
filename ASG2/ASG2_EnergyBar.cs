@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; //For the UI 
+using TMPro; //For TextMeshPro
 
 public class ASG2_EnergyBar : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class ASG2_EnergyBar : MonoBehaviour
     /// For the player's energy
     /// </summary>
     private int currentEnergy;
+
+    /// <summary>
+    /// Text for energy
+    /// </summary>
+    public TextMeshProUGUI energyText;
 
     /// <summary>
     /// Time between each stamina regen tick
@@ -97,6 +103,12 @@ public class ASG2_EnergyBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (currentEnergy <= 10000)
+        {
+            energyText.text = "" + (currentEnergy / 100); //Change the text to the number
+        } else
+        {
+            energyText.text = "100"; //Change the text to the number
+        }
     }
 }

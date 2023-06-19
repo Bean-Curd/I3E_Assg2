@@ -754,6 +754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 148105162}
+  healthText: {fileID: 717424145}
 --- !u!1 &154769978
 GameObject:
   m_ObjectHideFlags: 0
@@ -3231,6 +3232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyBar: {fileID: 882145704}
+  energyText: {fileID: 1234706122}
 --- !u!1 &918902166
 GameObject:
   m_ObjectHideFlags: 0
