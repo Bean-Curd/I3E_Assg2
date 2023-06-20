@@ -44,6 +44,11 @@ public class Player : MonoBehaviour
     bool onFloor;
 
     /// <summary>
+    /// Pick up objects
+    /// </summary>
+    bool pickUp = false;
+
+    /// <summary>
     /// Choose the camera for the head so it can rotate the camera instead of the whole body
     /// </summary>
     public Transform head;
@@ -93,10 +98,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*void OnFire()
+    void OnFire()
     {
-        ASG2_HealthBar.instance.Damage(1000);
-    }*/
+        //ASG2_HealthBar.instance.Damage(1000);
+        pickUp = true;
+
+    }
 
     /// <summary>
     /// What happens when you enter an object
@@ -126,6 +133,8 @@ public class Player : MonoBehaviour
         onFloor = false; //Once player is off an object they are no longer touching floor
     }
 
+    public float InteractionDistance = 3f;
+
     // Update is called once per frame
     void Update()
     {
@@ -146,17 +155,18 @@ public class Player : MonoBehaviour
             moveSpeed = 0.11f;
         }
 
-        RaycastHit hitInfo; //Infomation on what the ray hit
-        float maxInteractionDistance = 3f; //Distance of raycast ray
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, InteractionDistance))
+        {        
 
-        //Debug.DrawLine(transform.position, transform.position + (transform.forward * maxInteractionDistance));
-        Debug.DrawRay(transform.position, transform.position + (transform.forward * maxInteractionDistance));
-
-        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, maxInteractionDistance))
-        {
-            if(hitInfo.transform.tag == "Collectible")
+            if (hit.collider.tag == "Collectible")
             {
-                hitInfo.transform.GetComponent<Coin>().Collected();
+                Debug.DrawRay(transform.position, (transform.forward * InteractionDistance), Color.green);
+
+                if (pickUp == true)
+                {
+                    Destroy(hit.transform.gameObject);
+                    pickUp = false;
+                }
             }
         }
 
