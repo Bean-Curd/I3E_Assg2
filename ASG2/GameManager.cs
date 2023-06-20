@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns the player when the scene is loaded
+    /// </summary>
     private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
     {
         if(activePlayer == null) //If there is no player, spawn a player

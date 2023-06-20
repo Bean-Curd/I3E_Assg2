@@ -146,6 +146,20 @@ public class Player : MonoBehaviour
             moveSpeed = 0.11f;
         }
 
+        RaycastHit hitInfo; //Infomation on what the ray hit
+        float maxInteractionDistance = 3f; //Distance of raycast ray
+
+        //Debug.DrawLine(transform.position, transform.position + (transform.forward * maxInteractionDistance));
+        Debug.DrawRay(transform.position, transform.position + (transform.forward * maxInteractionDistance));
+
+        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, maxInteractionDistance))
+        {
+            if(hitInfo.transform.tag == "Collectible")
+            {
+                hitInfo.transform.GetComponent<Coin>().Collected();
+            }
+        }
+
         /// <summary>
         /// Turning the input into movement -> forward/back movement
         /// </summary>
