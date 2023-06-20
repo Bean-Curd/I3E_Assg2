@@ -10,7 +10,8 @@ using UnityEngine;
 using UnityEngine.InputSystem; //For movement
 //using TMPro; //For TextMeshPro
 
-public class ASG2 : MonoBehaviour
+
+public class Player : MonoBehaviour
 {
     /// <summary>
     /// New vector with (0,0,0), for WASD movement
@@ -47,7 +48,7 @@ public class ASG2 : MonoBehaviour
     /// </summary>
     public Transform head;
 
-    public static ASG2 instance;
+    public static Player instance;
 
     private void Awake()
     {
