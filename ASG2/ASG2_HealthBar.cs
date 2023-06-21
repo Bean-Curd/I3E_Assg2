@@ -64,7 +64,6 @@ public class ASG2_HealthBar : MonoBehaviour
         {
             currentHealth = 0; 
             healthBar.value = currentHealth;
-            Debug.Log("Dead now");
         }
     }
 

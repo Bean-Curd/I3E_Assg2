@@ -181,6 +181,7 @@ MonoBehaviour:
   moveSpeed: 0.11
   rotationSpeed: 0.25
   head: {fileID: 1421043939853155204}
+  InteractionDistance: 3
 --- !u!1001 &1421043939387609110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,7 +203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 192788, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 193908, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_Name
@@ -210,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 193908, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 427246, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_RootOrder
@@ -290,7 +291,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 2.1, z: 0.6}
+  m_Size: {x: 0.7, y: 2.2, z: 0.7}
   m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!4 &1421043939387708664 stripped
 Transform:
