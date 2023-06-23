@@ -3874,10 +3874,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Font \u2013 Entanglement: https://www.fontspace.com/entanglement-font-f70715\r\n\nPlanet
-    in start menu: https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/AW_Venus_nli6oy.jpg\r\n\nSpace
-    background in start menu: https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?cs=srgb&dl=pexels-philippe-donn-1169754.jpg&fm=jpg\r\n\nSpace
-    suit: https://assetstore.unity.com/packages/3d/characters/humanoids/sci-fi/sci-fi-space-soldier-polygonr-66384\r\n"
+  m_text: "Font \u2013 Entanglement: https://www.fontspace.com/entanglement-font-f70715\r\n\r\nPlanet
+    in start menu: https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/AW_Venus_nli6oy.jpg\r\n\r\nSpace
+    background in start menu: https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?cs=srgb&dl=pexels-philippe-donn-1169754.jpg&fm=jpg\r\n\r\nSpace
+    suit: https://assetstore.unity.com/packages/3d/characters/humanoids/sci-fi/sci-fi-space-soldier-polygonr-66384\r\n\r\nFirst-aid
+    kit: https://assetstore.unity.com/packages/3d/props/first-aid-set-160073\r\n\r\nSci-Fi
+    Chairs/desks/furniture/etc: https://assetstore.unity.com/packages/3d/environments/sci-fi/free-sci-fi-office-pack-195067\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-styled-modular-pack-82913\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-construction-kit-modular-159280\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
   m_sharedMaterial: {fileID: -1252590238253411368, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
@@ -8029,7 +8031,7 @@ MonoBehaviour:
     Left
     Shift - Sprint
 
-    Left Click - Interact / Fire
+    Left Click - Interact
 
 
 '
