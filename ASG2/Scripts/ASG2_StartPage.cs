@@ -6,10 +6,20 @@ using UnityEngine.SceneManagement;
 public class ASG2_StartPage : MonoBehaviour
 {
     /// <summary>
-    /// To change to the spaceship scene when either of the difficulty options are pressed
+    /// To start normal mode when clicked
     /// </summary>
-    public void StartGame()
+    public void ClickNormal()
     {
+        GameManager.gameManager.NormalMode(true); //Implement normal mode variables
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
+    }
+
+    /// <summary>
+    /// To start hard mode when clicked
+    /// </summary>
+    public void ClickHard()
+    {
+        GameManager.gameManager.HardMode(true); //Implement hard mode variables
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
     }
 
