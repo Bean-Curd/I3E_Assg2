@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Movement speed
     /// </summary>
-    public float moveSpeed = 0.1f;
+    public float moveSpeed = 0.11f;
 
     /// <summary>
     /// New vextor for mouse/camera movement
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.LeftShift)) //If left shift is lifted, reset movement speed
         {
-            moveSpeed = 0.1f;
+            moveSpeed = 0.11f;
         }
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, InteractionDistance))
