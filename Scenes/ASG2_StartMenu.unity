@@ -633,7 +633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &128892892
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3843,7 +3843,7 @@ RectTransform:
   m_GameObject: {fileID: 783596701}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5057809, z: 1}
+  m_LocalScale: {x: 1, y: 0.39647323, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 898240642}
@@ -3851,7 +3851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -807, y: 174.65765}
+  m_AnchoredPosition: {x: -807, y: 212.61752}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &783596703
@@ -3879,7 +3879,13 @@ MonoBehaviour:
     background in start menu: https://images.pexels.com/photos/1169754/pexels-photo-1169754.jpeg?cs=srgb&dl=pexels-philippe-donn-1169754.jpg&fm=jpg\r\n\r\nSpace
     suit: https://assetstore.unity.com/packages/3d/characters/humanoids/sci-fi/sci-fi-space-soldier-polygonr-66384\r\n\r\nFirst-aid
     kit: https://assetstore.unity.com/packages/3d/props/first-aid-set-160073\r\n\r\nSci-Fi
-    Chairs/desks/furniture/etc: https://assetstore.unity.com/packages/3d/environments/sci-fi/free-sci-fi-office-pack-195067\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-styled-modular-pack-82913\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-construction-kit-modular-159280\r\n"
+    Chairs/desks/furniture/etc: https://assetstore.unity.com/packages/3d/environments/sci-fi/free-sci-fi-office-pack-195067\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-styled-modular-pack-82913\r\n\r\nhttps://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-construction-kit-modular-159280\r\n\r\nBlood:
+    https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518\r\n\r\nScott
+    / Elena: https://assetstore.unity.com/packages/3d/characters/humanoids/humans/woman-with-cap-and-jacket-221114
+    \r\n\r\nJake: https://assetstore.unity.com/packages/3d/characters/humanoids/humans/bodyguards-31711\r\n\r\nSpear:
+    https://assetstore.unity.com/packages/3d/props/weapons/shield-sword-spear-178481\r\n\r\nJose:
+    https://assetstore.unity.com/packages/3d/characters/humanoids/sci-fi/sci-fi-character-08-renegade-208640\r\n\r\nImage
+    of crack on wall: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngmart.com%2Fimage%2F136205&psig=AOvVaw2vXj4WlQauco7-qdIqFm5T&ust=1687669433853000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNie1-OQ2_8CFQAAAAAdAAAAABAg\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
   m_sharedMaterial: {fileID: -1252590238253411368, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
@@ -3942,7 +3948,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 85.25958, y: -349.74365, z: -1496.9261, w: -1024.1472}
+  m_margin: {x: 85.25958, y: -349.74365, z: -1496.9261, w: -1434.5828}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4306,7 +4312,7 @@ RectTransform:
   m_GameObject: {fileID: 898240641}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.9771409, z: 1}
+  m_LocalScale: {x: 1, y: 2.5222385, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 783596702}
@@ -4315,7 +4321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -345.32303}
+  m_AnchoredPosition: {x: 0, y: -536.2723}
   m_SizeDelta: {x: 0, y: -21.349386}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &932987655
@@ -7920,8 +7926,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2145165092}
   m_HandleRect: {fileID: 2145165091}
   m_Direction: 2
-  m_Value: 1.0000007
-  m_Size: 0.52060014
+  m_Value: 0.99297404
+  m_Size: 0.40808982
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8833,8 +8839,8 @@ RectTransform:
   m_Father: {fileID: 980428740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.47939986}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
