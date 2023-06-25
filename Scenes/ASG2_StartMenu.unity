@@ -4337,6 +4337,10 @@ MonoBehaviour:
   healLimit: 0
   bulletLimit: 0
   ammo: 0
+  firstAidKit: 0
+  captainCard: 0
+  weaponCard: 0
+  c4: 0
 --- !u!4 &872537919
 Transform:
   m_ObjectHideFlags: 0
@@ -8102,7 +8106,9 @@ MonoBehaviour:
     Left
     Shift - Sprint
 
-    Left Click - Interact
+    Left Click - Interact / Skip
+
+    Dialogue
 
 
 '

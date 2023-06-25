@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem; //For movement
-//using TMPro; //For TextMeshPro
 
 
 public class Player : MonoBehaviour
@@ -44,14 +43,14 @@ public class Player : MonoBehaviour
     bool onFloor;
 
     /// <summary>
-    /// Pick up objects
-    /// </summary>
-    bool pickUp = false;
-
-    /// <summary>
     /// Choose the camera for the head so it can rotate the camera instead of the whole body
     /// </summary>
     public Transform head;
+
+    /// <summary>
+    /// To set as main camera
+    /// </summary>
+    Camera cam;
 
     public static Player instance;
 
@@ -65,7 +64,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     /// <summary>
@@ -101,8 +100,6 @@ public class Player : MonoBehaviour
     void OnFire()
     {
         //ASG2_HealthBar.instance.Damage(1000);
-        pickUp = true;
-
     }
 
     /// <summary>
@@ -155,20 +152,34 @@ public class Player : MonoBehaviour
             moveSpeed = 0.11f;
         }
 
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, InteractionDistance))
+        if (Input.GetMouseButtonDown(0)) //If left clicking an interactible object -> perform an action
+        {
+            /// <summary>
+            /// Ray sent on left click
+            /// </summary>
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+            {
+                if (hitInfo.collider.gameObject.GetComponent<Interactible>() != null) //If object is interactible
+                {
+                    Destroy(hitInfo.collider.gameObject);
+                }
+            }
+        }
+
+        /*if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, InteractionDistance))
         {        
 
             if (hit.collider.tag == "Collectible")
             {
-                Debug.DrawRay(transform.position, (transform.forward * InteractionDistance), Color.green);
-
-                if (pickUp == true)
+                if (interact == true)
                 {
                     Destroy(hit.transform.gameObject);
-                    pickUp = false;
+                    interact = false;
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Turning the input into movement -> forward/back movement
