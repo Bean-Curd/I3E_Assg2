@@ -213,7 +213,6 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit != true && firstEnter) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
         {
             ASG2_HealthBar.instance.Damage(6000);
-
             firstEnter = false;
 
             Debug.Log("HP to 40");

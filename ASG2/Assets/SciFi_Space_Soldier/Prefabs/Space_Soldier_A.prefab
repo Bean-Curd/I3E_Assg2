@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 13719338}
   m_Layer: 0
   m_Name: SK_Soldier_Legs
-  m_TagString: Untagged
+  m_TagString: Suit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 13783508}
   m_Layer: 0
   m_Name: SK_Soldier_Head
-  m_TagString: Untagged
+  m_TagString: Suit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 13720394}
   m_Layer: 0
   m_Name: SK_Soldier_Torso
-  m_TagString: Untagged
+  m_TagString: Suit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

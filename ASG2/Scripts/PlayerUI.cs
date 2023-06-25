@@ -34,6 +34,16 @@ public class PlayerUI : MonoBehaviour
     private bool introDone;
 
     /// <summary>
+    /// Click on scott's body
+    /// </summary>
+    public bool scottInteract = false;
+
+    /// <summary>
+    /// Scott dialogue
+    /// </summary>
+    public GameObject scott1;
+
+    /// <summary>
     /// So it can be accessed by other scripts
     /// </summary>
     public static PlayerUI instance;
@@ -75,11 +85,16 @@ public class PlayerUI : MonoBehaviour
             {
                 intro2.SetActive(false);
                 intro3.SetActive(true);
-            } 
+            }
             else if (introClicks == 2 && introDone != true)
             {
                 intro1.SetActive(false);
                 intro2.SetActive(true);
+            }
+
+            if (scottInteract) //If done approaching scott's body
+            {
+                scott1.SetActive(false);
             }
         }
     }

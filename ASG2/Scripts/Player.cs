@@ -112,6 +112,21 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// Trigger when entering an object
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "ScottTrigger") //If approaching scott's body
+        {
+            Debug.Log("Approaching Scott");
+            PlayerUI.instance.scottInteract = true;
+            PlayerUI.instance.scott1.SetActive(true);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    /// <summary>
     /// What happens when player is on an object
     /// </summary>
     void OnCollisionStay()
@@ -163,7 +178,9 @@ public class Player : MonoBehaviour
             {
                 if (hitInfo.collider.gameObject.GetComponent<Interactible>() != null) //If object is interactible
                 {
-                    Destroy(hitInfo.collider.gameObject);
+                    Debug.Log(hitInfo.collider.gameObject);
+
+                    //Destroy(hitInfo.collider.gameObject);
                 }
             }
         }
