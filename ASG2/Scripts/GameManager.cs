@@ -92,19 +92,19 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// First-Aid Kit item
     /// </summary>
-    public int firstAidKit = 0;
+    public bool firstAidKit;
     /// <summary>
     /// Captain's card item
     /// </summary>
-    public int captainCard = 0;
+    public bool captainCard;
     /// <summary>
     /// Weapon's Access Card item
     /// </summary>
-    public int weaponCard = 0;
+    public bool weaponCard;
     /// <summary>
     /// C4 item
     /// </summary>
-    public int c4 = 0;
+    public bool c4;
 
     /// <summary>
     /// For normal mode variables
@@ -169,6 +169,8 @@ public class GameManager : MonoBehaviour
     {
         spawn1 = GameObject.Find("Spawn1(Control)");
 
+        buildIndex = nextScene.buildIndex;
+
         if (spawn1 != null) //If there is no player, spawn a player
         {
             spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
@@ -176,18 +178,17 @@ public class GameManager : MonoBehaviour
             Debug.Log("New player");
         }
 
-        buildIndex = nextScene.buildIndex;
-
-        if (activePlayer == null && buildIndex != 0)
+        else if (activePlayer == null && buildIndex != 0)
         {
             activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
 
             Debug.Log("Active player spawned");
         }
 
-        if (buildIndex == 0 || buildIndex == 1)
+        else if (buildIndex == 0 || buildIndex == 1)
         {
             Destroy(activePlayer);
+            Debug.Log("Player destroyed");
         }
 
         else
@@ -200,12 +201,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         firstEnter = true;
-    }
+        firstAidKit = false;
+        captainCard = false;
+        weaponCard = false;
+        c4 = false;
+}
 
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit == 0 && firstEnter) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
+        if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit != true && firstEnter) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
         {
             ASG2_HealthBar.instance.Damage(6000);
 

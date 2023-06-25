@@ -1,6 +1,13 @@
+/*
+ * Author: Ashley Goh Yu Ting
+ * Date: 24/06/2023
+ * Description: I3E/STLD Assignment 2 - Player UI 
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; //For managing scenes
 
 public class PlayerUI : MonoBehaviour
 {
@@ -12,7 +19,10 @@ public class PlayerUI : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     } 
 
     // Start is called before the first frame update
