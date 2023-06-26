@@ -52,6 +52,20 @@ public class Player : MonoBehaviour
     /// </summary>
     Camera cam;
 
+    /// <summary>
+    /// For the first-aid kit collection
+    /// </summary>
+    private Coroutine firstAidText;
+    /// <summary>
+    /// For the captainCard collection
+    /// </summary>
+    private Coroutine captainCardText;
+
+    /// <summary>
+    /// Number of times player can heal
+    /// </summary>
+    private int healCount = 5;
+
     public static Player instance;
 
     private void Awake()
@@ -97,9 +111,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnFire()
+    void OnEKey()
     {
-        //ASG2_HealthBar.instance.Damage(1000);
+        ASG2_HealthBar.instance.Damage(1000);
     }
 
     /// <summary>
@@ -124,6 +138,61 @@ public class Player : MonoBehaviour
             PlayerUI.instance.scott1.SetActive(true);
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "EmergencyDoor") //If approaching door's locked down during emergency 
+        {
+            Debug.Log("Approaching Emergency Door");
+            PlayerUI.instance.emergencyDoorInteract = true;
+            PlayerUI.instance.emergency1.SetActive(true);
+        }
+        else if (collision.gameObject.tag == "WeaponsDoor") //If approaching door's locked down during emergency 
+        {
+            Debug.Log("Approaching Weapon Door");
+            PlayerUI.instance.weaponDoorInteract = true;
+            PlayerUI.instance.weapon1.SetActive(true);
+        }
+        else if (collision.gameObject.tag == "ElenaTrigger") //If approaching elena's body
+        {
+            Debug.Log("Approaching Elena");
+            PlayerUI.instance.elenaInteract = true;
+            PlayerUI.instance.elena1.SetActive(true);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "HealingStation") //If near healing station, restore HP
+        {
+            PlayerUI.instance.healingInteract = true;
+
+            if (ASG2_HealthBar.instance.currentHealth >= 10000) //If max HP
+            {
+                Debug.Log("Healing recieved: Max HP");
+                PlayerUI.instance.healingNo.SetActive(true);
+            }
+            else
+            {
+                Debug.Log("Healing recieved: Low HP");
+                if (GameManager.gameManager.healLimit)
+                {
+                    if (healCount > 0)
+                    {
+                        ASG2_HealthBar.instance.Damage(-10000); //Restore HP
+                        healCount -= 1;
+                        Debug.Log("Heals left = " + healCount);
+                    }
+                }
+                else
+                {
+                    ASG2_HealthBar.instance.Damage(-10000); //Restore HP
+                    PlayerUI.instance.healingYes.SetActive(true);
+                }
+            }
+        }
+        else if (collision.gameObject.tag == "JakeTrigger") //If approaching jake's body
+        {
+            Debug.Log("Approaching Jake");
+            PlayerUI.instance.jakeInteract = true;
+            PlayerUI.instance.jake1.SetActive(true);
+            Destroy(collision.gameObject);
+        }
+
     }
 
     /// <summary>
@@ -143,6 +212,31 @@ public class Player : MonoBehaviour
         //Debug.Log(gameObject.name + " Exit " + collision.gameObject.name);
 
         onFloor = false; //Once player is off an object they are no longer touching floor
+    }
+
+    /// <summary>
+    /// Delay first-aid kit dialogue for 1 second
+    /// </summary>
+    IEnumerator WaitForFirstAid()
+    {
+        yield return new WaitForSeconds(0.05f);
+        Debug.Log("Delay 0.05 second");
+
+        PlayerUI.instance.firstAidInteract = true; //Set up dialogue
+        PlayerUI.instance.firstAid1.SetActive(true);
+
+        firstAidText = null;
+    }
+
+    IEnumerator WaitForCaptainCard()
+    {
+        yield return new WaitForSeconds(0.05f);
+        Debug.Log("Delay 0.05 second");
+
+        PlayerUI.instance.captainInteract = true; //Set up dialogue
+        PlayerUI.instance.captain1.SetActive(true);
+
+        captainCardText = null;
     }
 
     public float InteractionDistance = 3f;
@@ -176,11 +270,39 @@ public class Player : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hitInfo))
             {
-                if (hitInfo.collider.gameObject.GetComponent<Interactible>() != null) //If object is interactible
+                if (hitInfo.collider.gameObject.GetComponent<Interactible>() != null) //If object is interactible/has the interactible script
                 {
-                    Debug.Log(hitInfo.collider.gameObject);
+                    Debug.Log(hitInfo.collider.gameObject.tag);
 
-                    //Destroy(hitInfo.collider.gameObject);
+                    if (hitInfo.collider.gameObject.tag == "First-Aid Kit")
+                    {
+                        Debug.Log("Destroying object");
+                        GameManager.gameManager.firstAidKit = true;
+                        ASG2_HealthBar.instance.Damage(-6000); //Restore HP to max
+
+                        PlayerUI.instance.firstAidKit.SetActive(true); //Show symbols
+                        PlayerUI.instance.firstAidKitOverlay.SetActive(true);
+
+                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+
+                        Destroy(hitInfo.collider.gameObject);
+
+                        firstAidText = StartCoroutine(WaitForFirstAid());
+                    }
+                    else if (hitInfo.collider.gameObject.tag == "Captain's Card")
+                    {
+                        Debug.Log("Destroying object");
+                        GameManager.gameManager.captainCard = true;
+
+                        PlayerUI.instance.captainCard.SetActive(true); //Show symbol
+
+                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+
+                        Destroy(hitInfo.collider.gameObject);
+
+                        captainCardText = StartCoroutine(WaitForCaptainCard());
+                    }
+
                 }
             }
         }

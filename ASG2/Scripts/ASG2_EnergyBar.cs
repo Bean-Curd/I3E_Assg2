@@ -65,21 +65,25 @@ public class ASG2_EnergyBar : MonoBehaviour
     /// </summary>
     public void Sprint(int amount)
     {
-        if (currentEnergy - amount >= 0) //If there is enough energy to sprint, deduct the energy required to sprint
+        if (GameManager.gameManager.firstAidKit) //If first-aid kit collected, enable sprint
         {
-            Player.instance.moveSpeed = 0.22f; //Increase movement speed if player can sprint
-            currentEnergy -= amount;
-            energyBar.value = currentEnergy;
+            if (currentEnergy - amount >= 0) //If there is enough energy to sprint, deduct the energy required to sprint
+            {
+                Player.instance.moveSpeed = 0.22f; //Increase movement speed if player can sprint
+                currentEnergy -= amount;
+                energyBar.value = currentEnergy;
 
-            if (regen != null){ //If using energy mid-regeneration, stop regeneration
-                StopCoroutine(regen);
+                if (regen != null)
+                { //If using energy mid-regeneration, stop regeneration
+                    StopCoroutine(regen);
+                }
+
+                regen = StartCoroutine(RegenEnergy());
             }
-
-            regen = StartCoroutine(RegenEnergy()); 
-        }
-        else
-        {
-            Player.instance.moveSpeed = 0.11f; //Reset movement speed if player is out of energy
+            else
+            {
+                Player.instance.moveSpeed = 0.11f; //Reset movement speed if player is out of energy
+            }
         }
     }
 

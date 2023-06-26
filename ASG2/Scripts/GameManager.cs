@@ -64,29 +64,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public int windTimer; 
     /// <summary>
-    /// Enemy damage (Normal - 20HP, Hard - 40HP)
-    /// </summary>
-    public int enemyDamage; 
-    /// <summary>
-    /// Enemy HP (Normal - 4 Hits, Hard - 8 Hits)
-    /// </summary>
-    public int enemyHealth; 
-    /// <summary>
-    /// Enemy movement speed (Normal - 0.06f, Hard - 0.12f)
-    /// </summary>
-    public float enemySpeed; 
-    /// <summary>
     /// Limits heals at 5 times a playthrough
     /// </summary>
     public bool healLimit; 
-    /// <summary>
-    /// Limits bullet refills at 2 times a playthrough, players can hold 12x3 bullets at a time
-    /// </summary>
-    public bool bulletLimit; 
-    /// <summary>
-    /// Ammo will not appear in the combat area
-    /// </summary>
-    public bool ammo;
 
     //Items obtained
     /// <summary>

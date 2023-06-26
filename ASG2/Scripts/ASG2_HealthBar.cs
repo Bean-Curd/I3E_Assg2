@@ -25,7 +25,7 @@ public class ASG2_HealthBar : MonoBehaviour
     /// <summary>
     /// For the player's health
     /// </summary>
-    private int currentHealth;
+    public int currentHealth;
 
     /// <summary>
     /// Text for health
@@ -51,17 +51,25 @@ public class ASG2_HealthBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Change health bar when player takes damage
+    /// Change health bar when player takes damage/negative for heals
     /// </summary>
     public void Damage(int amount)
     {
-        if (currentHealth - amount > 0) //If there is enough health, deduct the amount
+        if ((currentHealth - amount) <= 10000 && (currentHealth - amount) > 0) //If there is enough health, deduct the amount
         {
+            Debug.Log("HealthBar deducting");
             currentHealth -= amount;
             healthBar.value = currentHealth;
         }
-        else //If not enough health left, change health bar to 0
+        else if ((currentHealth - amount) > 10000) //If more than 100 HP, limit to 100
         {
+            Debug.Log("HealthBar overheal");
+            currentHealth = 10000;
+            healthBar.value = currentHealth;
+        }
+        else if ((currentHealth - amount) <= 0) //If not enough health left, change health bar to 0
+        {
+            Debug.Log("HealthBar not enough");
             currentHealth = 0; 
             healthBar.value = currentHealth;
         }
