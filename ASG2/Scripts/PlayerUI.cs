@@ -12,9 +12,9 @@ using UnityEngine.SceneManagement; //For managing scenes
 public class PlayerUI : MonoBehaviour
 {
     /// <summary>
-    /// Temp game object for dialogue
+    /// Pause menu
     /// </summary>
-    private GameObject dialogue;
+    public GameObject pauseMenu;
 
     /// <summary>
     /// Intro1 as game object
@@ -197,119 +197,131 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gameManager.pause) //If currently paused, show pause menu
+        {
+            pauseMenu.SetActive(true);
+        }
+        else if (GameManager.gameManager.pause != true) //If not paused, hide paused menu
+        {
+            pauseMenu.SetActive(false);
+        }
+
         if (Input.GetMouseButtonDown(0)) //If left click is pressed, change dialogue
         {
-            introClicks += 1;
+            if (GameManager.gameManager.pause != true) //If not paused, can change text
+            {
+                introClicks += 1;
 
-            if (introClicks > 3)
-            {
-                intro3.SetActive(false);
-                introDone = true;
-            }
-            else if (introClicks == 3 && introDone != true)
-            {
-                intro2.SetActive(false);
-                intro3.SetActive(true);
-            }
-            else if (introClicks == 2 && introDone != true)
-            {
-                intro1.SetActive(false);
-                intro2.SetActive(true);
-            }
+                if (introClicks > 3)
+                {
+                    intro3.SetActive(false);
+                    introDone = true;
+                }
+                else if (introClicks == 3 && introDone != true)
+                {
+                    intro2.SetActive(false);
+                    intro3.SetActive(true);
+                }
+                else if (introClicks == 2 && introDone != true)
+                {
+                    intro1.SetActive(false);
+                    intro2.SetActive(true);
+                }
 
-            if (scottInteract) //If done approaching scott's body
-            {
-                scott1.SetActive(false);
-            }
-            
-            if (emergencyDoorInteract) //If approaching locked doors
-            {
-                emergency1.SetActive(false);
-            }
-            
-            if (weaponDoorInteract) //If approaching locked weapon door
-            {
-                weapon1.SetActive(false);
-            }
-            
-            if (elenaInteract) //If done approaching elena's body
-            {
-                elena1.SetActive(false);
-            }
-            
-            if (firstAidInteract) //If picked up first-aid kit
-            {
-                firstAid1.SetActive(false);
-                firstAidClicks += 1;
+                if (scottInteract) //If done approaching scott's body
+                {
+                    scott1.SetActive(false);
+                }
 
-                if (firstAidClicks > 4)
+                if (emergencyDoorInteract) //If approaching locked doors
                 {
-                    firstAid4.SetActive(false);
+                    emergency1.SetActive(false);
                 }
-                else if (firstAidClicks == 4)
-                {
-                    firstAid3.SetActive(false);
-                    firstAid4.SetActive(true);
-                }
-                else if (firstAidClicks == 3)
-                {
-                    firstAid2.SetActive(false);
-                    firstAid3.SetActive(true);
-                }
-                else if (firstAidClicks == 2)
-                {
-                    firstAid2.SetActive(true);
-                }
-            }
-            
-            if (healingInteract) //If near healing station
-            {
-                if (ASG2_HealthBar.instance.currentHealth >= 10000) //If max HP
-                {
-                    healingNo.SetActive(false);
-                    healingYes.SetActive(false);
 
+                if (weaponDoorInteract) //If approaching locked weapon door
+                {
+                    weapon1.SetActive(false);
                 }
-            }
-            
-            if (jakeInteract) //If done approaching jake's body
-            {
-                jake1.SetActive(false);
-            }
-            
-            if (captainInteract) //If picked up Captain's card
-            {
-                captain1.SetActive(false);
-                captainClicks += 1;
 
-                if (captainClicks > 3)
+                if (elenaInteract) //If done approaching elena's body
                 {
-                    captain3.SetActive(false);
+                    elena1.SetActive(false);
                 }
-                else if (captainClicks == 3)
+
+                if (firstAidInteract) //If picked up first-aid kit
                 {
-                    captain2.SetActive(false);
-                    captain3.SetActive(true);
+                    firstAid1.SetActive(false);
+                    firstAidClicks += 1;
+
+                    if (firstAidClicks > 4)
+                    {
+                        firstAid4.SetActive(false);
+                    }
+                    else if (firstAidClicks == 4)
+                    {
+                        firstAid3.SetActive(false);
+                        firstAid4.SetActive(true);
+                    }
+                    else if (firstAidClicks == 3)
+                    {
+                        firstAid2.SetActive(false);
+                        firstAid3.SetActive(true);
+                    }
+                    else if (firstAidClicks == 2)
+                    {
+                        firstAid2.SetActive(true);
+                    }
                 }
-                else if (captainClicks == 2)
+
+                if (healingInteract) //If near healing station
                 {
-                    captain2.SetActive(true);
+                    if (ASG2_HealthBar.instance.currentHealth >= 10000) //If max HP
+                    {
+                        healingNo.SetActive(false);
+                        healingYes.SetActive(false);
+
+                    }
                 }
-            }
-            
-             if (monitorInteract) //If done approaching main monitor
-            {
-                if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
+
+                if (jakeInteract) //If done approaching jake's body
                 {
-                    monitorYes.SetActive(false);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
-                    GameManager.gameManager.firstCutscene = true;
-                    monitorInteract = false;
+                    jake1.SetActive(false);
                 }
-                else
+
+                if (captainInteract) //If picked up Captain's card
                 {
-                    monitorNo.SetActive(false);
-                    monitorInteract = false;
+                    captain1.SetActive(false);
+                    captainClicks += 1;
+
+                    if (captainClicks > 3)
+                    {
+                        captain3.SetActive(false);
+                    }
+                    else if (captainClicks == 3)
+                    {
+                        captain2.SetActive(false);
+                        captain3.SetActive(true);
+                    }
+                    else if (captainClicks == 2)
+                    {
+                        captain2.SetActive(true);
+                    }
+                }
+
+                if (monitorInteract) //If done approaching main monitor
+                {
+                    if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
+                    {
+                        monitorYes.SetActive(false);
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
+                        GameManager.gameManager.firstCutscene = true;
+                        monitorInteract = false;
+                    }
+                    else
+                    {
+                        monitorNo.SetActive(false);
+                        monitorInteract = false;
+                    }
                 }
             }
         }

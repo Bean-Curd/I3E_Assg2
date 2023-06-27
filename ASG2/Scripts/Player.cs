@@ -118,9 +118,17 @@ public class Player : MonoBehaviour
     /// <summary>
     /// To pause the game
     /// </summary>
-    void OnEKey()
+    void OnPause() //When the escape key is pressed, stop time and bring up pause screen
     {
-        ASG2_HealthBar.instance.Damage(1000);
+        //ASG2_HealthBar.instance.Damage(1000);
+        if (GameManager.gameManager.pause) //If currently paused, unpause
+        {
+            GameManager.gameManager.pause = false;
+        }
+        else if (GameManager.gameManager.pause != true) //If not paused, pause 
+        {
+            GameManager.gameManager.pause = true;
+        }
     }
 
     /// <summary>

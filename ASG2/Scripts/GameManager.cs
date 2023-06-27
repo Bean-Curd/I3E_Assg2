@@ -20,6 +20,11 @@ public class GameManager : MonoBehaviour
     public static GameManager gameManager { get; private set; }
 
     /// <summary>
+    /// Pause the game
+    /// </summary>
+    public bool pause;
+
+    /// <summary>
     /// Player prefab
     /// </summary>
     public GameObject playerPrefab;
@@ -190,6 +195,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pause = false;
         firstEnter = true;
         firstCutscene = false;
         secondCutscene = false;
@@ -208,6 +214,17 @@ public class GameManager : MonoBehaviour
             firstEnter = false;
 
             Debug.Log("HP to 40");
+        }
+
+        if (pause) //If currently paused, stop time
+        {
+            Time.timeScale = 0;
+            Player.instance.rotationSpeed = 0.00f;
+        } 
+        else if (pause != true) //If not paused, time flows normally
+        {
+            Time.timeScale = 1;
+            Player.instance.rotationSpeed = 0.25f;
         }
     }
 }
