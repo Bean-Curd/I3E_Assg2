@@ -32,7 +32,10 @@ public class ASG2_StartPage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player.instance.eKey = false;
+        Player.instance.xKey = false;
+        Player.instance.iKey = false;
+        Player.instance.tKey = false;
     }
 
     /// <summary>

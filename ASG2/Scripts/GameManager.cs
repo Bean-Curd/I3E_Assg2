@@ -111,6 +111,15 @@ public class GameManager : MonoBehaviour
             windTimer = 300; 
             healLimit = false;
 
+            pause = false;
+            firstEnter = true;
+            firstCutscene = false;
+            secondCutscene = false;
+            firstAidKit = false;
+            captainCard = false;
+            weaponCard = false;
+            c4 = false;
+
             Debug.Log("Normal");
         }
 
@@ -126,6 +135,15 @@ public class GameManager : MonoBehaviour
             windTick = 200; //200 as in 2.00
             windTimer = 150;
             healLimit = true;
+
+            pause = false;
+            firstEnter = true;
+            firstCutscene = false;
+            secondCutscene = false;
+            firstAidKit = false;
+            captainCard = false;
+            weaponCard = false;
+            c4 = false;
 
             Debug.Log("Hard");
         }
@@ -151,7 +169,7 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        //SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
+        SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
 
         activePlayer = GameObject.FindGameObjectWithTag("Player");
     }
@@ -159,13 +177,29 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Spawns the player when the scene is loaded
     /// </summary>
-    /*private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
+    private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
     {
         spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
+        spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
 
         buildIndex = nextScene.buildIndex;
 
-        if (spawn1 != null) //If there is no spawn point, add it
+        if (activePlayer != null) //If there is a player, kill it
+        {
+            Destroy(activePlayer);
+            activePlayer = null;
+            Debug.Log("Player destroyed");
+        }
+
+        if (activePlayer == null && buildIndex != 0) //If there is no player and not in start menu, spawn player prefab at spawn point
+        {
+            Debug.Log(spawn1Location);
+            activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
+
+            Debug.Log("Active player spawned");
+        }
+
+        /*if (spawn1 != null) //If there is no spawn point, add it
         {
             spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
 
@@ -184,15 +218,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(activePlayer);
             Debug.Log("Player destroyed");
-        }
+        }*/
 
         else
         {
             return;
         }
-    }*/
+    }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame updates
     void Start()
     {
         pause = false;

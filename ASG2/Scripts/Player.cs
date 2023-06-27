@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem; //For movement
+using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour
@@ -53,6 +54,23 @@ public class Player : MonoBehaviour
     Camera cam;
 
     /// <summary>
+    /// E from exit
+    /// </summary>
+    public bool eKey = false;
+    /// <summary>
+    /// X from exit
+    /// </summary>
+    public bool xKey = false;
+    /// <summary>
+    /// I from exit
+    /// </summary>
+    public bool iKey = false;
+    /// <summary>
+    /// T from exit
+    /// </summary>
+    public bool tKey = false;
+
+    /// <summary>
     /// For the first-aid kit collection
     /// </summary>
     private Coroutine firstAidText;
@@ -82,7 +100,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+ 
     }
 
     /// <summary>
@@ -128,6 +146,50 @@ public class Player : MonoBehaviour
         else if (GameManager.gameManager.pause != true) //If not paused, pause 
         {
             GameManager.gameManager.pause = true;
+        }
+    }
+
+    /// <summary>
+    /// E from exit to leave for start menu
+    /// </summary>
+    void OnEKey()
+    {
+        if (GameManager.gameManager.pause)
+        {
+            eKey = true;
+        }
+    }
+
+    /// <summary>
+    /// X from exit to leave for start menu
+    /// </summary>
+    void OnXKey()
+    {
+        if (GameManager.gameManager.pause)
+        {
+            xKey = true;
+        }
+    }
+
+    /// <summary>
+    /// I from exit to leave for start menu
+    /// </summary>
+    void OnIKey()
+    {
+        if (GameManager.gameManager.pause)
+        {
+            iKey = true;
+        }
+    }
+
+    /// <summary>
+    /// T from exit to leave for start menu
+    /// </summary>
+    void OnTKey()
+    {
+        if (GameManager.gameManager.pause)
+        {
+            tKey = true;
         }
     }
 
@@ -282,6 +344,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
         if (jump && onFloor) //If player is trying to jump and is on the floor
         {
             GetComponent<Rigidbody>().AddForce(new Vector3(0, 5, 0), ForceMode.Impulse);
@@ -297,6 +361,27 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift)) //If left shift is lifted, reset movement speed
         {
             moveSpeed = 0.11f;
+        }
+
+        if (GameManager.gameManager.pause) //If currently paused, allow for exit
+        {
+            if (eKey) //If E key is pressed
+            {
+                Debug.Log("E");
+                if (xKey) //if X key is pressed
+                {
+                    Debug.Log("X");
+                    if (iKey) //If I key is pressed
+                    {
+                        Debug.Log("I");
+                        if (tKey) //If T key is pressed
+                        {
+                            Debug.Log("T");
+                            SceneManager.LoadScene(0);
+                        }
+                    }
+                }
+            }
         }
 
         if (Input.GetMouseButtonDown(0)) //If left clicking an interactible object -> perform an action
