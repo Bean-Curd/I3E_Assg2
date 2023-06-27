@@ -16,7 +16,6 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     private GameObject dialogue;
 
-
     /// <summary>
     /// Intro1 as game object
     /// </summary>
@@ -147,13 +146,26 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     public bool healingInteract = false;
     /// <summary>
-    /// If Hp less then max
-    /// </summary>
-    public GameObject healingYes;
-    /// <summary>
     /// If Hp max
     /// </summary>
     public GameObject healingNo;
+    /// <summary>
+    /// If Hp less then max
+    /// </summary>
+    public GameObject healingYes;
+
+    /// <summary>
+    /// When approaching main monitor
+    /// </summary>
+    public bool monitorInteract = false;
+    /// <summary>
+    /// When you don't have the captain's card
+    /// </summary>
+    public GameObject monitorNo;
+    /// <summary>
+    /// When you have the captain's card
+    /// </summary>
+    public GameObject monitorYes;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -209,22 +221,22 @@ public class PlayerUI : MonoBehaviour
             {
                 scott1.SetActive(false);
             }
-
+            
             if (emergencyDoorInteract) //If approaching locked doors
             {
                 emergency1.SetActive(false);
             }
-
+            
             if (weaponDoorInteract) //If approaching locked weapon door
             {
                 weapon1.SetActive(false);
             }
-
+            
             if (elenaInteract) //If done approaching elena's body
             {
                 elena1.SetActive(false);
             }
-
+            
             if (firstAidInteract) //If picked up first-aid kit
             {
                 firstAid1.SetActive(false);
@@ -249,7 +261,7 @@ public class PlayerUI : MonoBehaviour
                     firstAid2.SetActive(true);
                 }
             }
-
+            
             if (healingInteract) //If near healing station
             {
                 if (ASG2_HealthBar.instance.currentHealth >= 10000) //If max HP
@@ -259,12 +271,12 @@ public class PlayerUI : MonoBehaviour
 
                 }
             }
-
+            
             if (jakeInteract) //If done approaching jake's body
             {
                 jake1.SetActive(false);
             }
-
+            
             if (captainInteract) //If picked up Captain's card
             {
                 captain1.SetActive(false);
@@ -282,6 +294,22 @@ public class PlayerUI : MonoBehaviour
                 else if (captainClicks == 2)
                 {
                     captain2.SetActive(true);
+                }
+            }
+            
+             if (monitorInteract) //If done approaching main monitor
+            {
+                if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
+                {
+                    monitorYes.SetActive(false);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
+                    GameManager.gameManager.firstCutscene = true;
+                    monitorInteract = false;
+                }
+                else
+                {
+                    monitorNo.SetActive(false);
+                    monitorInteract = false;
                 }
             }
         }

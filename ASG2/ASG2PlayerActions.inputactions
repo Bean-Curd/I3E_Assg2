@@ -42,9 +42,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EKey",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "3be2a151-27fd-4273-9c7a-e6695e0c4089",
+                    "id": "ef3a5000-7978-494a-9dfc-01711f0ed715",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -285,12 +285,12 @@
                 },
                 {
                     "name": "",
-                    "id": "62d4d9c7-237c-4bcb-a914-1603fcc0e9d7",
-                    "path": "<Keyboard>/e",
+                    "id": "bfdaa697-8ada-447c-a038-a5d3b3c6a0a6",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EKey",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

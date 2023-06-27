@@ -60,6 +60,10 @@ public class Player : MonoBehaviour
     /// For the captainCard collection
     /// </summary>
     private Coroutine captainCardText;
+    /// <summary>
+    /// For the main monitor interaction
+    /// </summary>
+    private Coroutine mainMonitorText;
 
     /// <summary>
     /// Number of times player can heal
@@ -111,6 +115,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// To pause the game
+    /// </summary>
     void OnEKey()
     {
         ASG2_HealthBar.instance.Damage(1000);
@@ -192,7 +199,6 @@ public class Player : MonoBehaviour
             PlayerUI.instance.jake1.SetActive(true);
             Destroy(collision.gameObject);
         }
-
     }
 
     /// <summary>
@@ -215,7 +221,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Delay first-aid kit dialogue for 1 second
+    /// Delay first-aid kit dialogue for 0.05 second
     /// </summary>
     IEnumerator WaitForFirstAid()
     {
@@ -228,6 +234,9 @@ public class Player : MonoBehaviour
         firstAidText = null;
     }
 
+    /// <summary>
+    /// Delay captain's card dialogue for 0.05 second
+    /// </summary>
     IEnumerator WaitForCaptainCard()
     {
         yield return new WaitForSeconds(0.05f);
@@ -237,6 +246,27 @@ public class Player : MonoBehaviour
         PlayerUI.instance.captain1.SetActive(true);
 
         captainCardText = null;
+    }
+
+    /// <summary>
+    /// Delay monitor interaction dialogue for 0.05 second
+    /// </summary>
+    IEnumerator WaitForMainMonitor()
+    {
+        yield return new WaitForSeconds(0.05f);
+        Debug.Log("Delay 0.05 second");
+
+        PlayerUI.instance.monitorInteract = true;
+        if (GameManager.gameManager.captainCard)
+        {
+            PlayerUI.instance.monitorYes.SetActive(true);
+        }
+        else 
+        {
+            PlayerUI.instance.monitorNo.SetActive(true);
+        }
+
+        mainMonitorText = null;
     }
 
     public float InteractionDistance = 3f;
@@ -302,23 +332,18 @@ public class Player : MonoBehaviour
 
                         captainCardText = StartCoroutine(WaitForCaptainCard());
                     }
+                    else if (hitInfo.collider.gameObject.tag == "Monitor")
+                    {
+                        Debug.Log("Interacting with Monitor");
+
+                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+
+                        mainMonitorText = StartCoroutine(WaitForMainMonitor());
+                    }
 
                 }
             }
         }
-
-        /*if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, InteractionDistance))
-        {        
-
-            if (hit.collider.tag == "Collectible")
-            {
-                if (interact == true)
-                {
-                    Destroy(hit.transform.gameObject);
-                    interact = false;
-                }
-            }
-        }*/
 
         /// <summary>
         /// Turning the input into movement -> forward/back movement

@@ -52,7 +52,16 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// First time entering the spaceship
     /// </summary>
-    private bool firstEnter;
+    public bool firstEnter;
+    /// <summary>
+    /// First time seeing Emergency Cutscene (Cutscene1)
+    /// </summary>
+    public bool firstCutscene;
+    /// <summary>
+    /// First time seeing C4 Cutscene (Cutscene2)
+    /// </summary>
+    public bool secondCutscene;
+
 
     // For difficulty variables
     /// <summary>
@@ -137,7 +146,7 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
+        //SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
 
         activePlayer = GameObject.FindGameObjectWithTag("Player");
     }
@@ -145,27 +154,28 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Spawns the player when the scene is loaded
     /// </summary>
-    private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
+    /*private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
     {
-        spawn1 = GameObject.Find("Spawn1(Control)");
+        spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
 
         buildIndex = nextScene.buildIndex;
 
-        if (spawn1 != null) //If there is no player, spawn a player
+        if (spawn1 != null) //If there is no spawn point, add it
         {
             spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
 
-            Debug.Log("New player");
+            Debug.Log("New spawn");
         }
 
-        else if (activePlayer == null && buildIndex != 0)
+        if (activePlayer == null && buildIndex != 0) //If there is no player and not in start menu, spawn player prefab at spawn point
         {
+            Debug.Log(spawn1Location);
             activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
 
             Debug.Log("Active player spawned");
         }
 
-        else if (buildIndex == 0 || buildIndex == 1)
+        else if (activePlayer == null && buildIndex == 0 || buildIndex == 1)
         {
             Destroy(activePlayer);
             Debug.Log("Player destroyed");
@@ -175,17 +185,19 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()
     {
         firstEnter = true;
+        firstCutscene = false;
+        secondCutscene = false;
         firstAidKit = false;
         captainCard = false;
         weaponCard = false;
         c4 = false;
-}
+    }
 
     // Update is called once per frame
     void Update()
