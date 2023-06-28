@@ -14607,7 +14607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0865bd213c8a534ea7d6ca998d41e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactibleText: {fileID: 0}
 --- !u!23 &548800350
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31750,8 +31749,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f67cf618c742f4eb2b43c0f811eb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pause: 0
   playerPrefab: {fileID: 2672992353594865152, guid: 31434dc9375d2d443965c840a8e73782, type: 3}
-  activePlayer: {fileID: 0}
+  canvasPrefab: {fileID: 0}
+  initialDamage: 0
   firstEnter: 0
   firstCutscene: 0
   secondCutscene: 0

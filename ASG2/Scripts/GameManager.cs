@@ -65,7 +65,11 @@ public class GameManager : MonoBehaviour
     private int buildIndex;
 
     /// <summary>
-    /// First time entering the spaceship
+    /// First time entering the spaceship for deducting HP
+    /// </summary>
+    public bool initialDamage;
+    /// <summary>
+    /// First time entering the spaceship for initial text
     /// </summary>
     public bool firstEnter;
     /// <summary>
@@ -122,6 +126,7 @@ public class GameManager : MonoBehaviour
             healLimit = false;
 
             pause = false;
+            initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
             secondCutscene = false;
@@ -147,6 +152,7 @@ public class GameManager : MonoBehaviour
             healLimit = true;
 
             pause = false;
+            initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
             secondCutscene = false;
@@ -200,15 +206,24 @@ public class GameManager : MonoBehaviour
         {
             Destroy(activePlayer);
             Destroy(activeCanvas);
-            Debug.Log("Original player destroyed" + activePlayer);
+            Debug.Log("Original player destroyed: " + activePlayer);
             activePlayer = null;
             activeCanvas = null;
         }
 
         if (activePlayer == null && buildIndex != 0) //If there is no player and not in start menu, spawn player prefab at spawn point
         {
-            activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
-            Debug.Log("Active player spawned" + activePlayer);
+            if (buildIndex == 2) //In specific scenes, have specific rotations
+            {
+                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 150, 0)));
+            }
+            else
+            {
+                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
+            }
+
+            activeCanvas = Instantiate(canvasPrefab);
+            Debug.Log("Active player spawned: " + activePlayer);
         } 
 
         /*if (spawn1 != null) //If there is no spawn point, add it
@@ -242,6 +257,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         pause = false;
+        initialDamage = false;
         firstEnter = true;
         firstCutscene = false;
         secondCutscene = false;
@@ -254,23 +270,32 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit != true && firstEnter) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
+        if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit != true && initialDamage != true) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
         {
             ASG2_HealthBar.instance.Damage(6000);
-            firstEnter = false;
+            PlayerUI.instance.intro1.SetActive(true); //Show 1st dialogue
+            initialDamage = true;
 
             Debug.Log("HP to 40");
         }
 
-        if (pause) //If currently paused, stop time
+        if (pause || SceneManager.GetActiveScene().buildIndex == 2) //If currently paused or in cutscene, stop time
         {
             Time.timeScale = 0;
             Player.instance.rotationSpeed = 0.00f;
         } 
-        else if (pause != true) //If not paused, time flows normally
+        else if (pause != true || SceneManager.GetActiveScene().buildIndex != 2) //If not paused or out of cutscene, time flows normally
         {
             Time.timeScale = 1;
             Player.instance.rotationSpeed = 0.25f;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 2 && firstCutscene != true) //When entering 1st cutscene
+        {
+            Debug.Log("Starting Cutscene 1: Emergency Lockdown Lifted");
+            PlayerUI.instance.voidScreen.SetActive(true);
+            PlayerUI.instance.cutscene11.SetActive(true);
+            firstCutscene = true;
         }
     }
 }

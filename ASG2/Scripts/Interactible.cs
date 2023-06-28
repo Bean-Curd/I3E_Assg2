@@ -9,11 +9,6 @@ public class Interactible : MonoBehaviour
     /// </summary>
     new Renderer renderer;
 
-    /// <summary>
-    /// Interactible Object Text
-    /// </summary>
-    public GameObject interactibleText;
-
     public static Interactible instance;
 
     private void Awake()
@@ -30,14 +25,14 @@ public class Interactible : MonoBehaviour
     private void OnMouseEnter()
     {
         renderer.material.color = Color.blue;
-        interactibleText.SetActive(true);
+        PlayerUI.instance.interactibleText.SetActive(true);
 
     }
 
     private void OnMouseExit()
     {
         renderer.material.color = Color.white;
-        interactibleText.SetActive(false);
+        PlayerUI.instance.interactibleText.SetActive(false);
     }
 
     // Update is called once per frame

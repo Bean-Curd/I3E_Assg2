@@ -49,6 +49,11 @@ public class Player : MonoBehaviour
     public Transform head;
 
     /// <summary>
+    /// Raycast ray distance
+    /// </summary>
+    public float InteractionDistance = 3f;
+
+    /// <summary>
     /// To set as main camera
     /// </summary>
     Camera cam;
@@ -339,8 +344,6 @@ public class Player : MonoBehaviour
         mainMonitorText = null;
     }
 
-    public float InteractionDistance = 3f;
-
     // Update is called once per frame
     void Update()
     {
@@ -391,7 +394,7 @@ public class Player : MonoBehaviour
             /// </summary>
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, InteractionDistance))
             {
                 if (hitInfo.collider.gameObject.GetComponent<Interactible>() != null) //If object is interactible/has the interactible script
                 {
@@ -406,7 +409,7 @@ public class Player : MonoBehaviour
                         PlayerUI.instance.firstAidKit.SetActive(true); //Show symbols
                         PlayerUI.instance.firstAidKitOverlay.SetActive(true);
 
-                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+                        PlayerUI.instance.interactibleText.SetActive(false); //Hide interactible text
 
                         Destroy(hitInfo.collider.gameObject);
 
@@ -419,7 +422,7 @@ public class Player : MonoBehaviour
 
                         PlayerUI.instance.captainCard.SetActive(true); //Show symbol
 
-                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+                        PlayerUI.instance.interactibleText.SetActive(false); //Hide interactible text
 
                         Destroy(hitInfo.collider.gameObject);
 
@@ -429,7 +432,7 @@ public class Player : MonoBehaviour
                     {
                         Debug.Log("Interacting with Monitor");
 
-                        Interactible.instance.interactibleText.SetActive(false); //Hide interactible text
+                        PlayerUI.instance.interactibleText.SetActive(false); //Hide interactible text
 
                         mainMonitorText = StartCoroutine(WaitForMainMonitor());
                     }

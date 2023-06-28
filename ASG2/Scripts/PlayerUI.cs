@@ -17,6 +17,16 @@ public class PlayerUI : MonoBehaviour
     public GameObject pauseMenu;
 
     /// <summary>
+    /// Void Screen
+    /// </summary>
+    public GameObject voidScreen;
+
+    /// <summary>
+    /// Interactible Object Text
+    /// </summary>
+    public GameObject interactibleText;
+
+    /// <summary>
     /// Intro1 as game object
     /// </summary>
     public GameObject intro1;
@@ -168,6 +178,27 @@ public class PlayerUI : MonoBehaviour
     public GameObject monitorYes;
 
     /// <summary>
+    /// Cutscene 1 dialogue 1
+    /// </summary>
+    public GameObject cutscene11;
+    /// <summary>
+    /// Cutscene 1 dialogue 2
+    /// </summary>
+    public GameObject cutscene12;
+    /// <summary>
+    /// Cutscene 1 dialogue 3
+    /// </summary>
+    public GameObject cutscene13;
+    /// <summary>
+    /// Cutscene 1 dialogue 4
+    /// </summary>
+    public GameObject cutscene14;
+    /// <summary>
+    /// Clicks for Cutscene 1
+    /// </summary>
+    private int cutscene1Clicks;
+
+    /// <summary>
     /// So it can be accessed by other scripts
     /// </summary>
     public static PlayerUI instance;
@@ -184,14 +215,11 @@ public class PlayerUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Show the intro sequence
-        Debug.Log("Intro");
         introClicks = 1;
         firstAidClicks = 1;
         captainClicks = 1;
+        cutscene1Clicks = 1;
         introDone = false;
-        intro1.SetActive(true); //Show 1st dialogue
-
     }
 
     // Update is called once per frame
@@ -210,22 +238,52 @@ public class PlayerUI : MonoBehaviour
         {
             if (GameManager.gameManager.pause != true) //If not paused, can change text
             {
-                introClicks += 1;
+                if (GameManager.gameManager.firstCutscene) //For dialogue after scene change 
+                {
+                    cutscene11.SetActive(false);
+                    cutscene1Clicks += 1;
 
-                if (introClicks > 3)
-                {
-                    intro3.SetActive(false);
-                    introDone = true;
+                    if (cutscene1Clicks > 4)
+                    {
+                        cutscene14.SetActive(false);
+                        voidScreen.SetActive(false);
+                    }
+                    else if (cutscene1Clicks == 4)
+                    {
+                        cutscene13.SetActive(false);
+                        cutscene14.SetActive(true);
+                    }
+                    else if (cutscene1Clicks == 3)
+                    {
+                        cutscene12.SetActive(false);
+                        cutscene13.SetActive(true);
+                    }
+                    else if (cutscene1Clicks == 2)
+                    {
+                        cutscene12.SetActive(true);
+                    }
                 }
-                else if (introClicks == 3 && introDone != true)
+
+                if (GameManager.gameManager.firstEnter && SceneManager.GetActiveScene().buildIndex == 1) //On first time entering spaceship scene,
                 {
-                    intro2.SetActive(false);
-                    intro3.SetActive(true);
-                }
-                else if (introClicks == 2 && introDone != true)
-                {
-                    intro1.SetActive(false);
-                    intro2.SetActive(true);
+                    introClicks += 1;
+
+                    if (introClicks > 3)
+                    {
+                        intro3.SetActive(false);
+                        GameManager.gameManager.firstEnter = false;
+                        introDone = true;
+                    }
+                    else if (introClicks == 3 && introDone != true)
+                    {
+                        intro2.SetActive(false);
+                        intro3.SetActive(true);
+                    }
+                    else if (introClicks == 2 && introDone != true)
+                    {
+                        intro1.SetActive(false);
+                        intro2.SetActive(true);
+                    }
                 }
 
                 if (scottInteract) //If done approaching scott's body
@@ -313,9 +371,8 @@ public class PlayerUI : MonoBehaviour
                     if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
                     {
                         monitorYes.SetActive(false);
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
-                        GameManager.gameManager.firstCutscene = true;
                         monitorInteract = false;
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
                     }
                     else
                     {
