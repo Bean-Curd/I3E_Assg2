@@ -519,6 +519,10 @@ MonoBehaviour:
   moveSpeed: 0.11
   rotationSpeed: 0.25
   head: {fileID: 453009301247626956}
+  eKey: 0
+  xKey: 0
+  iKey: 0
+  tKey: 0
   InteractionDistance: 3
 --- !u!114 &253033714
 MonoBehaviour:

@@ -30,9 +30,19 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
 
     /// <summary>
+    /// Canvas prefab
+    /// </summary>
+    public GameObject canvasPrefab;
+
+    /// <summary>
     /// Current player
     /// </summary>
     private GameObject activePlayer;
+
+    /// <summary>
+    /// Current canvas
+    /// </summary>
+    private GameObject activeCanvas;
 
     /// <summary>
     /// Player spawn 1 (Control room)
@@ -169,9 +179,13 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
-
         activePlayer = GameObject.FindGameObjectWithTag("Player");
+        activeCanvas = GameObject.FindGameObjectWithTag("Canvas");
+
+        spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
+        spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
+
+        SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
     }
 
     /// <summary>
@@ -179,25 +193,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
     {
-        spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
-        spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
-
         buildIndex = nextScene.buildIndex;
+        Debug.Log(activePlayer);
 
-        if (activePlayer != null) //If there is a player, kill it
+        if (activePlayer != null) //If there is a player originally in the scene, kill it
         {
             Destroy(activePlayer);
+            Destroy(activeCanvas);
+            Debug.Log("Original player destroyed" + activePlayer);
             activePlayer = null;
-            Debug.Log("Player destroyed");
+            activeCanvas = null;
         }
 
         if (activePlayer == null && buildIndex != 0) //If there is no player and not in start menu, spawn player prefab at spawn point
         {
-            Debug.Log(spawn1Location);
             activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
-
-            Debug.Log("Active player spawned");
-        }
+            Debug.Log("Active player spawned" + activePlayer);
+        } 
 
         /*if (spawn1 != null) //If there is no spawn point, add it
         {
