@@ -17,6 +17,7 @@ public class ASG2_StartPage : MonoBehaviour
     public void ClickNormal()
     {
         GameManager.gameManager.NormalMode(true); //Implement normal mode variables
+        GameManager.gameManager.LoadingScreen();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
     }
 
@@ -26,6 +27,7 @@ public class ASG2_StartPage : MonoBehaviour
     public void ClickHard()
     {
         GameManager.gameManager.HardMode(true); //Implement hard mode variables
+        GameManager.gameManager.LoadingScreen();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
     }
 

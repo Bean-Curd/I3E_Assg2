@@ -13,7 +13,6 @@ using TMPro; //For TextMeshPro
 
 public class GameManager : MonoBehaviour
 {
-
     /// <summary>
     /// So it can be accessed by other scripts
     /// </summary>
@@ -65,6 +64,15 @@ public class GameManager : MonoBehaviour
     private int buildIndex;
 
     /// <summary>
+    /// Game Object Array to destroy doors 
+    /// </summary>
+    private GameObject[] emergencyDoorArray;
+    /// <summary>
+    /// Game Object Array to change red lights
+    /// </summary>
+    private GameObject[] redLightsArray;
+
+    /// <summary>
     /// First time entering the spaceship for deducting HP
     /// </summary>
     public bool initialDamage;
@@ -76,6 +84,10 @@ public class GameManager : MonoBehaviour
     /// First time seeing Emergency Cutscene (Cutscene1)
     /// </summary>
     public bool firstCutscene;
+    /// <summary>
+    /// Starting suit section
+    /// </summary>
+    public bool suitSectionStart;
     /// <summary>
     /// First time seeing C4 Cutscene (Cutscene2)
     /// </summary>
@@ -115,6 +127,11 @@ public class GameManager : MonoBehaviour
     public bool c4;
 
     /// <summary>
+    /// For the loading screen
+    /// </summary>
+    private Coroutine loadingScreenWait;
+
+    /// <summary>
     /// For normal mode variables
     /// </summary>
     public void NormalMode(bool active)
@@ -129,6 +146,7 @@ public class GameManager : MonoBehaviour
             initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
+            suitSectionStart = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
@@ -155,6 +173,7 @@ public class GameManager : MonoBehaviour
             initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
+            suitSectionStart = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
@@ -217,9 +236,13 @@ public class GameManager : MonoBehaviour
             {
                 activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 150, 0)));
             }
+            else if (buildIndex == 1) //In specific scenes, have specific rotations
+            {
+                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 180, 0)));
+            }
             else
             {
-                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
+                //activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
             }
 
             activeCanvas = Instantiate(canvasPrefab);
@@ -260,11 +283,64 @@ public class GameManager : MonoBehaviour
         initialDamage = false;
         firstEnter = true;
         firstCutscene = false;
+        suitSectionStart = false;
         secondCutscene = false;
         firstAidKit = false;
         captainCard = false;
         weaponCard = false;
         c4 = false;
+    }
+
+
+    /// <summary>
+    /// Delay new sceme load for 3 seconds
+    /// </summary>
+    IEnumerator WaitForLoading()
+    {
+        yield return new WaitForSeconds(3f);
+        Debug.Log("Delay 3 second");
+
+        loadingScreenWait = null;
+    }
+
+    /// <summary>
+    /// Loading Screen between scenes
+    /// </summary>
+    public void LoadingScreen()
+    {
+        PlayerUI.instance.loadingScreen.SetActive(true);
+        PlayerUI.instance.voidScreen.SetActive(true);
+
+        loadingScreenWait = StartCoroutine(WaitForLoading());
+    }
+
+    /// <summary>
+    /// Destroy emergency locked doors
+    /// </summary>
+    void EmergencyLockdownLifted()
+    {
+        emergencyDoorArray = GameObject.FindGameObjectsWithTag("EmergencyDoor");
+
+        foreach (GameObject gameObject in emergencyDoorArray)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Change red lights to white
+    /// </summary>
+    void ChangeRedLights()
+    {
+        redLightsArray = GameObject.FindGameObjectsWithTag("RedLight");
+
+        foreach (GameObject gameObject in redLightsArray)
+        {
+            Destroy(gameObject);
+        }
+
+        LightsOn.instance.Activate();
+
     }
 
     // Update is called once per frame
@@ -279,15 +355,26 @@ public class GameManager : MonoBehaviour
             Debug.Log("HP to 40");
         }
 
-        if (pause || SceneManager.GetActiveScene().buildIndex == 2) //If currently paused or in cutscene, stop time
+        if (pause) //If currently paused, stop time
         {
             Time.timeScale = 0;
             Player.instance.rotationSpeed = 0.00f;
         } 
-        else if (pause != true || SceneManager.GetActiveScene().buildIndex != 2) //If not paused or out of cutscene, time flows normally
+        else if (pause != true) //If not paused, time flows normally
         {
             Time.timeScale = 1;
             Player.instance.rotationSpeed = 0.25f;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) //If in cutscene, stop player movement
+        {
+            Player.instance.rotationSpeed = 0.00f;
+            Player.instance.moveSpeed = 0.00f;
+        }
+        else if (SceneManager.GetActiveScene().buildIndex != 2) //If out of cutscene, stop player movement 
+        {
+            Player.instance.rotationSpeed = 0.25f;
+            Player.instance.moveSpeed = 0.11f;
         }
 
         if (SceneManager.GetActiveScene().buildIndex == 2 && firstCutscene != true) //When entering 1st cutscene
@@ -296,6 +383,15 @@ public class GameManager : MonoBehaviour
             PlayerUI.instance.voidScreen.SetActive(true);
             PlayerUI.instance.cutscene11.SetActive(true);
             firstCutscene = true;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 1 && firstCutscene && PlayerUI.instance.afterCutscene1Interact != true) //When entering spaceship after 1st cutscene
+        {
+            Debug.Log("Cutscene 1: Emergency Lockdown Lifted End");
+            EmergencyLockdownLifted();
+            ChangeRedLights();
+            SuitSectionBlock.instance.TriggerBlock();
+            PlayerUI.instance.afterCutscene11.SetActive(true);
         }
     }
 }

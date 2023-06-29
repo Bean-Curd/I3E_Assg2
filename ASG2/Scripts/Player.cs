@@ -93,6 +93,9 @@ public class Player : MonoBehaviour
     /// </summary>
     private int healCount = 5;
 
+    /// <summary>
+    /// So it can be accessed by other scripts
+    /// </summary>
     public static Player instance;
 
     private void Awake()
@@ -105,7 +108,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
- 
+        
     }
 
     /// <summary>
@@ -274,6 +277,12 @@ public class Player : MonoBehaviour
             PlayerUI.instance.jake1.SetActive(true);
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "SuitSectionBlocks") //If approaching a suit section block 
+        {
+            Debug.Log("Approaching Suit Sectiion Block");
+            PlayerUI.instance.suitSectionBlockInteract = true;
+            PlayerUI.instance.suitSectionBlock.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -380,6 +389,7 @@ public class Player : MonoBehaviour
                         if (tKey) //If T key is pressed
                         {
                             Debug.Log("T");
+                            GameManager.gameManager.LoadingScreen();
                             SceneManager.LoadScene(0);
                         }
                     }

@@ -12,6 +12,11 @@ using UnityEngine.SceneManagement; //For managing scenes
 public class PlayerUI : MonoBehaviour
 {
     /// <summary>
+    /// Loading Screen
+    /// </summary>
+    public GameObject loadingScreen;
+
+    /// <summary>
     /// Pause menu
     /// </summary>
     public GameObject pauseMenu;
@@ -199,6 +204,36 @@ public class PlayerUI : MonoBehaviour
     private int cutscene1Clicks;
 
     /// <summary>
+    /// To hide after Cutscene 1 dialogue 1
+    /// </summary>
+    public bool afterCutscene1Interact = false;
+    /// <summary>
+    /// After Cutscene 1 dialogue 1
+    /// </summary>
+    public GameObject afterCutscene11;
+    /// <summary>
+    /// After Cutscene 1 dialogue 2
+    /// </summary>
+    public GameObject afterCutscene12;
+    /// <summary>
+    /// After Cutscene 1 dialogue 3
+    /// </summary>
+    public GameObject afterCutscene13;
+    /// <summary>
+    /// Clicks for after Cutscene 1
+    /// </summary>
+    private int afterCutscene1Clicks;
+
+    /// <summary>
+    /// When approaching suit section blocks
+    /// </summary>
+    public bool suitSectionBlockInteract = false;
+    /// <summary>
+    /// For suit section blocks
+    /// </summary>
+    public GameObject suitSectionBlock;
+
+    /// <summary>
     /// So it can be accessed by other scripts
     /// </summary>
     public static PlayerUI instance;
@@ -219,6 +254,7 @@ public class PlayerUI : MonoBehaviour
         firstAidClicks = 1;
         captainClicks = 1;
         cutscene1Clicks = 1;
+        afterCutscene1Clicks = 1;
         introDone = false;
     }
 
@@ -238,7 +274,30 @@ public class PlayerUI : MonoBehaviour
         {
             if (GameManager.gameManager.pause != true) //If not paused, can change text
             {
-                if (GameManager.gameManager.firstCutscene) //For dialogue after scene change 
+                if (GameManager.gameManager.firstCutscene && SceneManager.GetActiveScene().buildIndex == 1) //For dialogue after scene change back to spaceship after cutscene 1
+                {
+                    afterCutscene11.SetActive(false);
+                    GameManager.gameManager.suitSectionStart = false;
+                    afterCutscene1Interact = true;
+                    afterCutscene1Clicks += 1;
+
+                    if (afterCutscene1Clicks > 3)
+                    {
+                        afterCutscene13.SetActive(false);
+                        GameManager.gameManager.suitSectionStart = true;
+                    }
+                    else if (afterCutscene1Clicks == 3)
+                    {
+                        afterCutscene12.SetActive(false);
+                        afterCutscene13.SetActive(true);
+                    }
+                    else if (afterCutscene1Clicks == 2)
+                    {
+                        afterCutscene12.SetActive(true);
+                    }
+                }
+
+                if (GameManager.gameManager.firstCutscene && SceneManager.GetActiveScene().buildIndex == 2) //For first cutscene dialogue after scene change to cutscene 1 scene
                 {
                     cutscene11.SetActive(false);
                     cutscene1Clicks += 1;
@@ -247,6 +306,8 @@ public class PlayerUI : MonoBehaviour
                     {
                         cutscene14.SetActive(false);
                         voidScreen.SetActive(false);
+                        Cutscene1DoorDown.instance.Cutscene1DoorDownAnimation();
+                        Cutscene1DoorUp.instance.Cutscene1DoorUpAnimation();
                     }
                     else if (cutscene1Clicks == 4)
                     {
@@ -372,6 +433,7 @@ public class PlayerUI : MonoBehaviour
                     {
                         monitorYes.SetActive(false);
                         monitorInteract = false;
+                        GameManager.gameManager.LoadingScreen();
                         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
                     }
                     else
@@ -379,6 +441,11 @@ public class PlayerUI : MonoBehaviour
                         monitorNo.SetActive(false);
                         monitorInteract = false;
                     }
+                }
+
+                if (suitSectionBlockInteract) //If done approaching suit section block
+                {
+                    suitSectionBlock.SetActive(false);
                 }
             }
         }
