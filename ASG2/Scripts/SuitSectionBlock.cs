@@ -18,6 +18,11 @@ public class SuitSectionBlock : MonoBehaviour
     /// For suit section escape block
     /// </summary>
     public GameObject escapeSuitBlock;
+    /// <summary>
+    /// For main hatch block
+    /// </summary>
+    public GameObject mainHatchBlock;
+
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -36,6 +41,7 @@ public class SuitSectionBlock : MonoBehaviour
     {
         livingSuitBlock.SetActive(true);
         escapeSuitBlock.SetActive(true);
+        mainHatchBlock.SetActive(true);
     }
 
     /// <summary>
@@ -45,6 +51,7 @@ public class SuitSectionBlock : MonoBehaviour
     {
         Destroy(livingSuitBlock);
         Destroy(escapeSuitBlock);
+        Destroy(mainHatchBlock);
     }
 
     // Start is called before the first frame update

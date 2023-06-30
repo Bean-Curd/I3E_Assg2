@@ -3915,7 +3915,7 @@ RectTransform:
   m_GameObject: {fileID: 783596701}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.36457306, z: 1}
+  m_LocalScale: {x: 1, y: 0.29058108, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 898240642}
@@ -3923,7 +3923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -807, y: 226.76437}
+  m_AnchoredPosition: {x: -807, y: 253.9678}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &783596703
@@ -3958,7 +3958,9 @@ MonoBehaviour:
     https://assetstore.unity.com/packages/3d/props/weapons/shield-sword-spear-178481\r\n\r\nJose:
     https://assetstore.unity.com/packages/3d/characters/humanoids/sci-fi/sci-fi-character-08-renegade-208640\r\n\r\nImage
     of crack on wall: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngmart.com%2Fimage%2F136205&psig=AOvVaw2vXj4WlQauco7-qdIqFm5T&ust=1687669433853000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNie1-OQ2_8CFQAAAAAdAAAAABAg\r\n\nRocks:
-    https://assetstore.unity.com/packages/3d/props/exterior/rock-package-118182\n"
+    https://assetstore.unity.com/packages/3d/props/exterior/rock-package-118182\n\nGuns:
+    https://assetstore.unity.com/packages/3d/props/weapons/fps-assault-rifle-sci-fi-weapon-edition-235010\r\n\r\nhttps://assetstore.unity.com/packages/3d/props/weapons/mac-sci-fi-sniper-rifle-188585\r\n\r\nhttps://assetstore.unity.com/packages/3d/props/guns/sci-fi-pistol-pbr-213679\r\n\r\nhttps://assetstore.unity.com/packages/3d/props/guns/free-sci-fi-shotgun-188680
+    \r\n\r\nhttps://assetstore.unity.com/packages/3d/props/weapons/ss1-bandit-weaponspackage-pbr-216132\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
   m_sharedMaterial: {fileID: -1252590238253411368, guid: 5aaf8899d0ae07246bc9fcdb1d07fa84, type: 2}
@@ -4021,7 +4023,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 85.25958, y: -349.74365, z: -1496.9261, w: -2071.104}
+  m_margin: {x: 85.25958, y: -349.74365, z: -1496.9261, w: -2077.0176}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4385,7 +4387,7 @@ RectTransform:
   m_GameObject: {fileID: 898240641}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2.7429342, z: 1}
+  m_LocalScale: {x: 1, y: 3.4413798, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 783596702}
@@ -4394,7 +4396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -622}
+  m_AnchoredPosition: {x: 0, y: -874}
   m_SizeDelta: {x: 0, y: -21.349386}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &932987655
@@ -8043,8 +8045,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2145165092}
   m_HandleRect: {fileID: 2145165091}
   m_Direction: 2
-  m_Value: 0.9981417
-  m_Size: 0.37525505
+  m_Value: 0.99727935
+  m_Size: 0.29909512
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8945,8 +8947,8 @@ RectTransform:
   m_Father: {fileID: 980428740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.623584}
-  m_AnchorMax: {x: 1, y: 0.998839}
+  m_AnchorMin: {x: 0, y: 0.698998}
+  m_AnchorMax: {x: 1, y: 0.9980931}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
