@@ -7,6 +7,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; //For the UI 
+using TMPro; //For TextMeshPro
 using UnityEngine.SceneManagement; //For managing scenes
 
 public class PlayerUI : MonoBehaviour
@@ -168,6 +170,18 @@ public class PlayerUI : MonoBehaviour
     /// If Hp less then max
     /// </summary>
     public GameObject healingYes;
+    /// <summary>
+    /// If on hard mode, warn of heals left
+    /// </summary>
+    public GameObject healLimitWarning;
+    /// <summary>
+    /// Clicks for heal limit
+    /// </summary>
+    private int healLimitClicks;
+    /// <summary>
+    /// Text for heal limit
+    /// </summary>
+    public TextMeshProUGUI healLimitText;
 
     /// <summary>
     /// When approaching main monitor
@@ -252,6 +266,7 @@ public class PlayerUI : MonoBehaviour
     {
         introClicks = 1;
         firstAidClicks = 1;
+        healLimitClicks = 1;
         captainClicks = 1;
         cutscene1Clicks = 1;
         afterCutscene1Clicks = 1;
@@ -394,10 +409,22 @@ public class PlayerUI : MonoBehaviour
 
                 if (healingInteract) //If near healing station
                 {
-                    if (ASG2_HealthBar.instance.currentHealth >= 10000) //If max HP
+                    healingNo.SetActive(false);
+                    healingYes.SetActive(false);
+                    healLimitClicks += 1;
+
+                    if (GameManager.gameManager.healLimit) //If there is a heal limit, show warning
                     {
-                        healingNo.SetActive(false);
-                        healingYes.SetActive(false);
+                        healLimitText.text = "[" + Player.instance.healCount + " Heals Left]"; //Change the text to the number
+
+                        if (healLimitClicks >= 1 && (healLimitClicks % 2) == 1) //If odd number that is not 1
+                        {
+                            healLimitWarning.SetActive(false);
+                        }
+                        else if ((healLimitClicks%2) == 0) //If even number
+                        {
+                            healLimitWarning.SetActive(true);
+                        }
 
                     }
                 }

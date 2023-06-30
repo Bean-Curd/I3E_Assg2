@@ -516,14 +516,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c28b09c46984264baffcc2445f100ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.11
+  moveSpeed: 4
   rotationSpeed: 0.25
   head: {fileID: 453009301247626956}
+  InteractionDistance: 3
   eKey: 0
   xKey: 0
   iKey: 0
   tKey: 0
-  InteractionDistance: 3
 --- !u!114 &253033714
 MonoBehaviour:
   m_ObjectHideFlags: 0

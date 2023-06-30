@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Movement speed
     /// </summary>
-    public float moveSpeed = 0.11f;
+    public float moveSpeed = 4.0f;
 
     /// <summary>
     /// New vextor for mouse/camera movement
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Number of times player can heal
     /// </summary>
-    private int healCount = 5;
+    public int healCount = 3;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -108,7 +108,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        eKey = false;
+        xKey = false;
+        iKey = false;
+        tKey = false;
     }
 
     /// <summary>
@@ -146,7 +149,6 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnPause() //When the escape key is pressed, stop time and bring up pause screen
     {
-        //ASG2_HealthBar.instance.Damage(1000);
         if (GameManager.gameManager.pause) //If currently paused, unpause
         {
             GameManager.gameManager.pause = false;
@@ -254,12 +256,13 @@ public class Player : MonoBehaviour
             else
             {
                 Debug.Log("Healing recieved: Low HP");
-                if (GameManager.gameManager.healLimit)
+                if (GameManager.gameManager.healLimit) //If there is a heal limit, deduct 1
                 {
                     if (healCount > 0)
                     {
                         ASG2_HealthBar.instance.Damage(-10000); //Restore HP
                         healCount -= 1;
+                        PlayerUI.instance.healingYes.SetActive(true);
                         Debug.Log("Heals left = " + healCount);
                     }
                 }
@@ -372,7 +375,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.LeftShift)) //If left shift is lifted, reset movement speed
         {
-            moveSpeed = 0.11f;
+            moveSpeed = 4.0f;
         }
 
         if (GameManager.gameManager.pause) //If currently paused, allow for exit
@@ -465,7 +468,7 @@ public class Player : MonoBehaviour
         /// For the player to move
         /// </summary>
         GetComponent<Rigidbody>().MovePosition(transform.position + (forwardMove * moveData.y
-        + rightMove * moveData.x) * moveSpeed);
+        + rightMove * moveData.x) * moveSpeed * Time.deltaTime);
 
         /// <summary>
         /// For the player to rotate

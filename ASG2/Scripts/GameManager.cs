@@ -89,6 +89,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public bool suitSectionStart;
     /// <summary>
+    /// Delay between hp loss
+    /// </summary>
+    private bool hpTickDelay;
+    /// <summary>
+    /// Delay between seconds
+    /// </summary>
+    private bool timerTickDelay;
+    /// <summary>
+    /// Float to hold the timer value
+    /// </summary>
+    public float timerTemp;
+    /// <summary>
     /// First time seeing C4 Cutscene (Cutscene2)
     /// </summary>
     public bool secondCutscene;
@@ -96,13 +108,13 @@ public class GameManager : MonoBehaviour
 
     // For difficulty variables
     /// <summary>
-    ///Damage wind does over time (Normal - 5HP/5sec, Hard 10HP/5sec)
+    /// Is damage wind does over time increased (Normal - 1HP/2sec, Hard 1HP/sec)
     /// </summary>
-    public int windTick; 
+    public bool windTick; 
     /// <summary>
-    /// Time limit (Normal - 5 mins, Hard - 2.5 mins)
+    /// Time limit (Normal - 5 mins, Hard - 3 mins)
     /// </summary>
-    public int windTimer; 
+    public float windTimer; 
     /// <summary>
     /// Limits heals at 5 times a playthrough
     /// </summary>
@@ -130,6 +142,14 @@ public class GameManager : MonoBehaviour
     /// For the loading screen
     /// </summary>
     private Coroutine loadingScreenWait;
+    /// <summary>
+    /// For the hp decay in suit section
+    /// </summary>
+    private Coroutine hpDecay;
+    /// <summary>
+    /// For the timer in suit section
+    /// </summary>
+    private Coroutine suitTimer;
 
     /// <summary>
     /// For normal mode variables
@@ -138,8 +158,8 @@ public class GameManager : MonoBehaviour
     {
         if (active)
         {
-            windTick = 100; //100 as in 1.00
-            windTimer = 300; 
+            windTick = false; //Not increased
+            windTimer = 300f; 
             healLimit = false;
 
             pause = false;
@@ -147,11 +167,15 @@ public class GameManager : MonoBehaviour
             firstEnter = true;
             firstCutscene = false;
             suitSectionStart = false;
+            hpTickDelay = false;
+            timerTickDelay = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
             weaponCard = false;
             c4 = false;
+
+            timerTemp = windTimer;
 
             Debug.Log("Normal");
         }
@@ -165,8 +189,8 @@ public class GameManager : MonoBehaviour
     {
         if (active)
         {
-            windTick = 200; //200 as in 2.00
-            windTimer = 150;
+            windTick = true; //Increased
+            windTimer = 180f;
             healLimit = true;
 
             pause = false;
@@ -174,11 +198,15 @@ public class GameManager : MonoBehaviour
             firstEnter = true;
             firstCutscene = false;
             suitSectionStart = false;
+            hpTickDelay = false;
+            timerTickDelay = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
             weaponCard = false;
             c4 = false;
+
+            timerTemp = windTimer;
 
             Debug.Log("Hard");
         }
@@ -284,6 +312,8 @@ public class GameManager : MonoBehaviour
         firstEnter = true;
         firstCutscene = false;
         suitSectionStart = false;
+        hpTickDelay = false;
+        timerTickDelay = false;
         secondCutscene = false;
         firstAidKit = false;
         captainCard = false;
@@ -301,6 +331,51 @@ public class GameManager : MonoBehaviour
         Debug.Log("Delay 3 second");
 
         loadingScreenWait = null;
+    }
+
+    /// <summary>
+    /// Take 1 HP every second
+    /// </summary>
+    IEnumerator WindTick()
+    {
+        if (windTick) //If wind damage increased
+        {
+            yield return new WaitForSeconds(1f);
+
+            ASG2_HealthBar.instance.Damage(100); //100 as in 1.00
+
+        }
+        else //If wind damage not increased
+        {
+            yield return new WaitForSeconds(2f);
+
+            ASG2_HealthBar.instance.Damage(100); //100 as in 1.00
+        }
+
+        hpTickDelay = false;
+        Debug.Log("1 HP lost");
+        hpDecay = null;
+    }
+
+    /// <summary>
+    /// Timer -1 every second
+    /// </summary>
+    IEnumerator SuitTimer()
+    {
+        if (timerTemp > 0) //If there is time left, deduct 1 sec
+        {
+            yield return new WaitForSeconds(1f);
+
+            timerTemp -= 1f;
+        }
+        else //If there is no time left, kill player
+        {
+            ASG2_HealthBar.instance.Damage(10000); //10000 as in 100.00
+            Debug.Log("Time's Up");
+        }
+
+        timerTickDelay = false;
+        suitTimer = null;
     }
 
     /// <summary>
@@ -371,10 +446,10 @@ public class GameManager : MonoBehaviour
             Player.instance.rotationSpeed = 0.00f;
             Player.instance.moveSpeed = 0.00f;
         }
-        else if (SceneManager.GetActiveScene().buildIndex != 2) //If out of cutscene, stop player movement 
+        else if (SceneManager.GetActiveScene().buildIndex != 2) //If out of cutscene, enable player movement 
         {
             Player.instance.rotationSpeed = 0.25f;
-            Player.instance.moveSpeed = 0.11f;
+            Player.instance.moveSpeed = 4f;
         }
 
         if (SceneManager.GetActiveScene().buildIndex == 2 && firstCutscene != true) //When entering 1st cutscene
@@ -392,6 +467,17 @@ public class GameManager : MonoBehaviour
             ChangeRedLights();
             SuitSectionBlock.instance.TriggerBlock();
             PlayerUI.instance.afterCutscene11.SetActive(true);
+        }
+
+        if (suitSectionStart && hpTickDelay != true && timerTickDelay != true) //When in suit section, set HP decay and timer
+        {
+            hpTickDelay = true; //So update() does not run windtick() every frame 
+            timerTickDelay = true;
+
+            SuitSectionTimer.instance.suitSectionTimerText.SetActive(true);
+
+            hpDecay = StartCoroutine(WindTick());
+            suitTimer = StartCoroutine(SuitTimer());
         }
     }
 }
