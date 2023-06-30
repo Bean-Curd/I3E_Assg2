@@ -72,6 +72,7 @@ public class ASG2_HealthBar : MonoBehaviour
             Debug.Log("HealthBar not enough");
             currentHealth = 0; 
             healthBar.value = currentHealth;
+            PlayerDeath.instance.PlayerDeathSequence();
         }
     }
 

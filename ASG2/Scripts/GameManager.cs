@@ -24,6 +24,16 @@ public class GameManager : MonoBehaviour
     public bool pause;
 
     /// <summary>
+    /// Player is dead
+    /// </summary>
+    public bool dead;
+
+    /// <summary>
+    /// What to do when player respawns
+    /// </summary>
+    public bool respawn;
+
+    /// <summary>
     /// Player prefab
     /// </summary>
     public GameObject playerPrefab;
@@ -163,6 +173,8 @@ public class GameManager : MonoBehaviour
             healLimit = false;
 
             pause = false;
+            dead = false;
+            respawn = false;
             initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
@@ -194,6 +206,8 @@ public class GameManager : MonoBehaviour
             healLimit = true;
 
             pause = false;
+            dead = false;
+            respawn = false;
             initialDamage = false;
             firstEnter = true;
             firstCutscene = false;
@@ -222,7 +236,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager destroyed");
 
             return;
-            
         } 
         else
         {
@@ -304,10 +317,58 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loading Screen between scenes
+    /// </summary>
+    public void LoadingScreen()
+    {
+        if (dead) //If dead hide the player death page
+        {
+            PlayerUI.instance.deathMenu.SetActive(false);
+            dead = false;
+        }
+
+        PlayerUI.instance.loadingScreen.SetActive(true);
+        PlayerUI.instance.voidScreen.SetActive(true);
+
+        loadingScreenWait = StartCoroutine(WaitForLoading());
+    }
+
+    /// <summary>
+    /// Spawns the player after death
+    /// </summary>
+    private void RespawnPlayer()
+    {
+        PlayerUI.instance.deathMenu.SetActive(false);
+        ASG2_HealthBar.instance.Damage(-10000); //Restore HP
+
+        LoadingScreen();
+
+        Destroy(activePlayer); //Destroy player and canvas, respawn them at spawn location
+        Destroy(activeCanvas);
+        Debug.Log("Original player destroyed: " + activePlayer);
+        activePlayer = null;
+        activeCanvas = null;
+
+        if (buildIndex == 1) //In specific scenes, have specific rotations/resets
+        {
+            activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 180, 0)));
+            suitSectionStart = true;
+            hpTickDelay = false;
+            timerTickDelay = false;
+            timerTemp = windTimer;
+        }
+
+        activeCanvas = Instantiate(canvasPrefab);
+        Debug.Log("Active player spawned: " + activePlayer);
+    }
+
     // Start is called before the first frame updates
     void Start()
     {
         pause = false;
+        dead = false;
+        respawn = false;
         initialDamage = false;
         firstEnter = true;
         firstCutscene = false;
@@ -379,17 +440,6 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Loading Screen between scenes
-    /// </summary>
-    public void LoadingScreen()
-    {
-        PlayerUI.instance.loadingScreen.SetActive(true);
-        PlayerUI.instance.voidScreen.SetActive(true);
-
-        loadingScreenWait = StartCoroutine(WaitForLoading());
-    }
-
-    /// <summary>
     /// Destroy emergency locked doors
     /// </summary>
     void EmergencyLockdownLifted()
@@ -430,18 +480,29 @@ public class GameManager : MonoBehaviour
             Debug.Log("HP to 40");
         }
 
-        if (pause) //If currently paused, stop time
+        if (respawn) //If respawning, kill player and respawn at spawn point
+        {
+            Debug.Log("Respawning Player");
+            RespawnPlayer();
+            respawn = false;
+        }
+
+        if (dead) //If currently dead, stop time
+        {
+            Time.timeScale = 0;
+            Player.instance.rotationSpeed = 0.00f;
+        }
+        else if (pause) //If currently paused, stop time
         {
             Time.timeScale = 0;
             Player.instance.rotationSpeed = 0.00f;
         } 
-        else if (pause != true) //If not paused, time flows normally
+        else if (pause != true) //If not paused or dead, time flows normally
         {
             Time.timeScale = 1;
             Player.instance.rotationSpeed = 0.25f;
         }
-
-        if (SceneManager.GetActiveScene().buildIndex == 2) //If in cutscene, stop player movement
+        else if (SceneManager.GetActiveScene().buildIndex == 2) //If in cutscene, stop player movement
         {
             Player.instance.rotationSpeed = 0.00f;
             Player.instance.moveSpeed = 0.00f;

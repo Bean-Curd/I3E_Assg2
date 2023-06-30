@@ -24,6 +24,11 @@ public class PlayerUI : MonoBehaviour
     public GameObject pauseMenu;
 
     /// <summary>
+    /// Death menu
+    /// </summary>
+    public GameObject deathMenu;
+
+    /// <summary>
     /// Void Screen
     /// </summary>
     public GameObject voidScreen;
@@ -276,6 +281,12 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gameManager.dead) //If currently dead, show death menu
+        {
+            voidScreen.SetActive(true);
+            deathMenu.SetActive(true);
+        }
+
         if (GameManager.gameManager.pause) //If currently paused, show pause menu
         {
             pauseMenu.SetActive(true);
@@ -420,6 +431,7 @@ public class PlayerUI : MonoBehaviour
                         if (healLimitClicks >= 1 && (healLimitClicks % 2) == 1) //If odd number that is not 1
                         {
                             healLimitWarning.SetActive(false);
+                            healingInteract = false;
                         }
                         else if ((healLimitClicks%2) == 0) //If even number
                         {

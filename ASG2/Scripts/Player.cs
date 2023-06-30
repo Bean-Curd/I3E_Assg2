@@ -112,6 +112,24 @@ public class Player : MonoBehaviour
         xKey = false;
         iKey = false;
         tKey = false;
+
+        if (GameManager.gameManager.firstAidKit) //If have the first aid kit, show the symbol
+        {
+            PlayerUI.instance.firstAidKit.SetActive(true);
+            PlayerUI.instance.firstAidKitOverlay.SetActive(true);
+        }
+        if (GameManager.gameManager.captainCard) //If have the captain's card, show the symbol
+        {
+            PlayerUI.instance.captainCard.SetActive(true);
+        }
+        if (GameManager.gameManager.weaponCard) //If have the weapons card, show the symbol
+        {
+
+        }
+        if (GameManager.gameManager.c4) //If have the c4, show the symbol
+        {
+
+        }
     }
 
     /// <summary>
@@ -149,7 +167,14 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnPause() //When the escape key is pressed, stop time and bring up pause screen
     {
-        if (GameManager.gameManager.pause) //If currently paused, unpause
+        if (GameManager.gameManager.dead) //If currently dead, respawn
+        {
+            Debug.Log("Respawning");
+
+            GameManager.gameManager.dead = false;
+            GameManager.gameManager.respawn = true;
+        }
+        else if (GameManager.gameManager.pause) //If currently paused, unpause
         {
             GameManager.gameManager.pause = false;
         }
@@ -164,7 +189,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnEKey()
     {
-        if (GameManager.gameManager.pause)
+        if (GameManager.gameManager.pause || GameManager.gameManager.dead)
         {
             eKey = true;
         }
@@ -175,7 +200,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnXKey()
     {
-        if (GameManager.gameManager.pause)
+        if (GameManager.gameManager.pause || GameManager.gameManager.dead)
         {
             xKey = true;
         }
@@ -186,7 +211,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnIKey()
     {
-        if (GameManager.gameManager.pause)
+        if (GameManager.gameManager.pause || GameManager.gameManager.dead)
         {
             iKey = true;
         }
@@ -197,7 +222,7 @@ public class Player : MonoBehaviour
     /// </summary>
     void OnTKey()
     {
-        if (GameManager.gameManager.pause)
+        if (GameManager.gameManager.pause || GameManager.gameManager.dead)
         {
             tKey = true;
         }
@@ -378,7 +403,7 @@ public class Player : MonoBehaviour
             moveSpeed = 4.0f;
         }
 
-        if (GameManager.gameManager.pause) //If currently paused, allow for exit
+        if (GameManager.gameManager.pause || GameManager.gameManager.dead) //If currently paused or dead, allow for exit
         {
             if (eKey) //If E key is pressed
             {

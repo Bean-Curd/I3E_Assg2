@@ -3647,7 +3647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pause: 0
-  playerPrefab: {fileID: 2672992353594865152, guid: 31434dc9375d2d443965c840a8e73782, type: 3}
+  playerPrefab: {fileID: 2672992353594865152, guid: d586b59b2eef4f64aabb9b856aa24d32, type: 3}
   canvasPrefab: {fileID: 3158270907783653304, guid: 7f664c14cfe743246842f18a4e2d0427, type: 3}
   initialDamage: 0
   firstEnter: 0
