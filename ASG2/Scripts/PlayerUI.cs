@@ -200,6 +200,10 @@ public class PlayerUI : MonoBehaviour
     /// When you have the captain's card
     /// </summary>
     public GameObject monitorYes;
+    /// <summary>
+    /// Starting the power puzzle
+    /// </summary>
+    public GameObject powerPuzzle1;
 
     /// <summary>
     /// Cutscene 1 dialogue 1
@@ -241,7 +245,7 @@ public class PlayerUI : MonoBehaviour
     /// <summary>
     /// Clicks for after Cutscene 1
     /// </summary>
-    private int afterCutscene1Clicks;
+    public int afterCutscene1Clicks;
 
     /// <summary>
     /// When approaching suit section blocks
@@ -251,6 +255,15 @@ public class PlayerUI : MonoBehaviour
     /// For suit section blocks
     /// </summary>
     public GameObject suitSectionBlock;
+
+    /// <summary>
+    /// When near suit
+    /// </summary>
+    public bool suitInteract = false;
+    /// <summary>
+    /// Approaching suit dialogue 1
+    /// </summary>
+    public GameObject suit1;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -468,14 +481,19 @@ public class PlayerUI : MonoBehaviour
 
                 if (monitorInteract) //If done approaching main monitor
                 {
-                    if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
+                    if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzle != true)
+                    {
+                        powerPuzzle1.SetActive(false);
+                        monitorInteract = false;
+                    }
+                    else if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
                     {
                         monitorYes.SetActive(false);
                         monitorInteract = false;
                         GameManager.gameManager.LoadingScreen();
                         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
                     }
-                    else
+                    else if (GameManager.gameManager.captainCard != true)
                     {
                         monitorNo.SetActive(false);
                         monitorInteract = false;
@@ -485,6 +503,11 @@ public class PlayerUI : MonoBehaviour
                 if (suitSectionBlockInteract) //If done approaching suit section block
                 {
                     suitSectionBlock.SetActive(false);
+                }
+
+                if (suitInteract) //If done approaching suit
+                {
+                    suit1.SetActive(false);
                 }
             }
         }

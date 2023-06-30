@@ -111,6 +111,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public float timerTemp;
     /// <summary>
+    /// Suit power puzzle
+    /// </summary>
+    public bool powerPuzzle;
+    /// <summary>
     /// First time seeing C4 Cutscene (Cutscene2)
     /// </summary>
     public bool secondCutscene;
@@ -181,6 +185,7 @@ public class GameManager : MonoBehaviour
             suitSectionStart = false;
             hpTickDelay = false;
             timerTickDelay = false;
+            powerPuzzle = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
@@ -214,6 +219,7 @@ public class GameManager : MonoBehaviour
             suitSectionStart = false;
             hpTickDelay = false;
             timerTickDelay = false;
+            powerPuzzle = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
@@ -375,6 +381,7 @@ public class GameManager : MonoBehaviour
         suitSectionStart = false;
         hpTickDelay = false;
         timerTickDelay = false;
+        powerPuzzle = false;
         secondCutscene = false;
         firstAidKit = false;
         captainCard = false;
@@ -501,16 +508,13 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             Player.instance.rotationSpeed = 0.25f;
+            Player.instance.moveSpeed = 4.0f;
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 2) //If in cutscene, stop player movement
+
+        if (SceneManager.GetActiveScene().buildIndex == 2 ) //If in cutscene, stop player movement
         {
             Player.instance.rotationSpeed = 0.00f;
             Player.instance.moveSpeed = 0.00f;
-        }
-        else if (SceneManager.GetActiveScene().buildIndex != 2) //If out of cutscene, enable player movement 
-        {
-            Player.instance.rotationSpeed = 0.25f;
-            Player.instance.moveSpeed = 4f;
         }
 
         if (SceneManager.GetActiveScene().buildIndex == 2 && firstCutscene != true) //When entering 1st cutscene
@@ -526,8 +530,17 @@ public class GameManager : MonoBehaviour
             Debug.Log("Cutscene 1: Emergency Lockdown Lifted End");
             EmergencyLockdownLifted();
             ChangeRedLights();
+
             SuitSectionBlock.instance.TriggerBlock();
             PlayerUI.instance.afterCutscene11.SetActive(true);
+        }
+
+        if (firstCutscene && SceneManager.GetActiveScene().buildIndex == 1 && PlayerUI.instance.afterCutscene1Clicks <= 3)
+        {
+            Debug.Log("Lock player movement");
+            Time.timeScale = 0;
+            Player.instance.rotationSpeed = 0.00f; //Stop player from moving to cheat the suit section
+            Player.instance.moveSpeed = 0.00f;
         }
 
         if (suitSectionStart && hpTickDelay != true && timerTickDelay != true) //When in suit section, set HP decay and timer

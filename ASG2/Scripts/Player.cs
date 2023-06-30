@@ -311,6 +311,15 @@ public class Player : MonoBehaviour
             PlayerUI.instance.suitSectionBlockInteract = true;
             PlayerUI.instance.suitSectionBlock.SetActive(true);
         }
+        else if (collision.gameObject.tag == "SuitTrigger") //If approaching the suit
+        {
+            if (GameManager.gameManager.suitSectionStart)
+            {
+                Debug.Log("Approaching Suit");
+                PlayerUI.instance.suitInteract = true;
+                PlayerUI.instance.suit1.SetActive(true);
+            }
+        }
     }
 
     /// <summary>
@@ -369,11 +378,16 @@ public class Player : MonoBehaviour
         Debug.Log("Delay 0.05 second");
 
         PlayerUI.instance.monitorInteract = true;
-        if (GameManager.gameManager.captainCard)
+
+        if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzle != true) //If suit section started and puzzle not completed, tell to divert power
+        {
+            PlayerUI.instance.powerPuzzle1.SetActive(true);
+        }
+        else if (GameManager.gameManager.captainCard) //If have the captain's card, start cutscene 1
         {
             PlayerUI.instance.monitorYes.SetActive(true);
         }
-        else 
+        else if (GameManager.gameManager.captainCard != true) //If don't have the captain's card, deny access
         {
             PlayerUI.instance.monitorNo.SetActive(true);
         }
