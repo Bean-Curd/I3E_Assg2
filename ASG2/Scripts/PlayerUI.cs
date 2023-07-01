@@ -201,9 +201,17 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     public GameObject monitorYes;
     /// <summary>
-    /// Starting the power puzzle
+    /// Starting the power puzzle text
     /// </summary>
     public GameObject powerPuzzle1;
+    /// <summary>
+    /// Power puzzle page
+    /// </summary>
+    public GameObject powerPuzzlePage;
+    /// <summary>
+    /// Text shown when puzzle completed
+    /// </summary>
+    public GameObject puzzleCompleted1;
 
     /// <summary>
     /// Cutscene 1 dialogue 1
@@ -264,6 +272,10 @@ public class PlayerUI : MonoBehaviour
     /// Approaching suit dialogue 1
     /// </summary>
     public GameObject suit1;
+    /// <summary>
+    /// Collecting suit dialogue 1
+    /// </summary>
+    public GameObject suitCollect1;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -320,7 +332,7 @@ public class PlayerUI : MonoBehaviour
                     afterCutscene1Interact = true;
                     afterCutscene1Clicks += 1;
 
-                    if (afterCutscene1Clicks > 3)
+                    if (afterCutscene1Clicks > 3 && GameManager.gameManager.suitObtained != true)
                     {
                         afterCutscene13.SetActive(false);
                         GameManager.gameManager.suitSectionStart = true;
@@ -332,6 +344,7 @@ public class PlayerUI : MonoBehaviour
                     }
                     else if (afterCutscene1Clicks == 2)
                     {
+                        PowerPuzzle.instance.PuzzleStart(); //Reset puzzle
                         afterCutscene12.SetActive(true);
                     }
                 }
@@ -481,9 +494,11 @@ public class PlayerUI : MonoBehaviour
 
                 if (monitorInteract) //If done approaching main monitor
                 {
-                    if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzle != true)
+                    if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.inPowerPuzzle != true) //If in suit section and not in puzzle, Pull up puzzle
                     {
                         powerPuzzle1.SetActive(false);
+                        powerPuzzlePage.SetActive(true);
+                        GameManager.gameManager.inPowerPuzzle = true;
                         monitorInteract = false;
                     }
                     else if (GameManager.gameManager.captainCard && GameManager.gameManager.firstCutscene != true) //If have the captain's card and have not seen the 1st cutscene before, trigger emergency lockdown cutscene
@@ -508,6 +523,12 @@ public class PlayerUI : MonoBehaviour
                 if (suitInteract) //If done approaching suit
                 {
                     suit1.SetActive(false);
+                    suitCollect1.SetActive(false);
+                }
+
+                if (GameManager.gameManager.powerPuzzleDone) //If done with power puzzle
+                {
+                    puzzleCompleted1.SetActive(false);
                 }
             }
         }

@@ -81,6 +81,10 @@ public class GameManager : MonoBehaviour
     /// Game Object Array to change red lights
     /// </summary>
     private GameObject[] redLightsArray;
+    /// <summary>
+    /// Game Object Array to destroy display suit items
+    /// </summary>
+    private GameObject[] destroyDisplaySuitArray;
 
     /// <summary>
     /// First time entering the spaceship for deducting HP
@@ -111,9 +115,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public float timerTemp;
     /// <summary>
-    /// Suit power puzzle
+    /// When in suit power puzzle
     /// </summary>
-    public bool powerPuzzle;
+    public bool inPowerPuzzle;
+    /// <summary>
+    /// Is power puzzle done
+    /// </summary>
+    public bool powerPuzzleDone;
     /// <summary>
     /// First time seeing C4 Cutscene (Cutscene2)
     /// </summary>
@@ -122,11 +130,11 @@ public class GameManager : MonoBehaviour
 
     // For difficulty variables
     /// <summary>
-    /// Is damage wind does over time increased (Normal - 1HP/2sec, Hard 1HP/sec)
+    /// Is damage wind does over time increased (Normal - 1HP/sec, Hard 3HP/sec)
     /// </summary>
     public bool windTick; 
     /// <summary>
-    /// Time limit (Normal - 5 mins, Hard - 3 mins)
+    /// Time limit (Normal - 2 mins, Hard - 1 min)
     /// </summary>
     public float windTimer; 
     /// <summary>
@@ -143,6 +151,10 @@ public class GameManager : MonoBehaviour
     /// Captain's card item
     /// </summary>
     public bool captainCard;
+    /// <summary>
+    /// Suit collected
+    /// </summary>
+    public bool suitObtained;
     /// <summary>
     /// Weapon's Access Card item
     /// </summary>
@@ -173,7 +185,7 @@ public class GameManager : MonoBehaviour
         if (active)
         {
             windTick = false; //Not increased
-            windTimer = 300f; 
+            windTimer = 120f; 
             healLimit = false;
 
             pause = false;
@@ -185,10 +197,12 @@ public class GameManager : MonoBehaviour
             suitSectionStart = false;
             hpTickDelay = false;
             timerTickDelay = false;
-            powerPuzzle = false;
+            inPowerPuzzle = false;
+            powerPuzzleDone = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
+            suitObtained = false;
             weaponCard = false;
             c4 = false;
 
@@ -207,7 +221,7 @@ public class GameManager : MonoBehaviour
         if (active)
         {
             windTick = true; //Increased
-            windTimer = 180f;
+            windTimer = 60f;
             healLimit = true;
 
             pause = false;
@@ -219,10 +233,12 @@ public class GameManager : MonoBehaviour
             suitSectionStart = false;
             hpTickDelay = false;
             timerTickDelay = false;
-            powerPuzzle = false;
+            inPowerPuzzle = false;
+            powerPuzzleDone = false;
             secondCutscene = false;
             firstAidKit = false;
             captainCard = false;
+            suitObtained = false;
             weaponCard = false;
             c4 = false;
 
@@ -362,7 +378,9 @@ public class GameManager : MonoBehaviour
             suitSectionStart = true;
             hpTickDelay = false;
             timerTickDelay = false;
+            inPowerPuzzle = false;
             timerTemp = windTimer;
+            PowerPuzzle.instance.PuzzleStart(); //Reset puzzle
         }
 
         activeCanvas = Instantiate(canvasPrefab);
@@ -381,10 +399,12 @@ public class GameManager : MonoBehaviour
         suitSectionStart = false;
         hpTickDelay = false;
         timerTickDelay = false;
-        powerPuzzle = false;
+        inPowerPuzzle = false;
+        powerPuzzleDone = false;
         secondCutscene = false;
         firstAidKit = false;
         captainCard = false;
+        suitObtained = false;
         weaponCard = false;
         c4 = false;
     }
@@ -410,18 +430,17 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
-            ASG2_HealthBar.instance.Damage(100); //100 as in 1.00
+            ASG2_HealthBar.instance.Damage(300); //300 as in 3.00
 
         }
         else //If wind damage not increased
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
             ASG2_HealthBar.instance.Damage(100); //100 as in 1.00
         }
 
         hpTickDelay = false;
-        Debug.Log("1 HP lost");
         hpDecay = null;
     }
 
@@ -473,6 +492,19 @@ public class GameManager : MonoBehaviour
 
         LightsOn.instance.Activate();
 
+    }
+
+    /// <summary>
+    /// Destroy display suit related items
+    /// </summary>
+    public void DestroySuitItems()
+    {
+        destroyDisplaySuitArray = GameObject.FindGameObjectsWithTag("Suit");
+
+        foreach (GameObject gameObject in destroyDisplaySuitArray)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame

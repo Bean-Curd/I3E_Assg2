@@ -313,11 +313,24 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "SuitTrigger") //If approaching the suit
         {
-            if (GameManager.gameManager.suitSectionStart)
+            if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzleDone != true) //If in suit section and not done with puzzle
             {
                 Debug.Log("Approaching Suit");
                 PlayerUI.instance.suitInteract = true;
                 PlayerUI.instance.suit1.SetActive(true);
+            }
+            else if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzleDone) // If in suit section and done with puzzle
+            {
+                Debug.Log("Collecting Suit");
+                GameManager.gameManager.suitSectionStart = false;
+                GameManager.gameManager.suitObtained = true;
+                GameManager.gameManager.DestroySuitItems();
+
+                SuitSectionTimer.instance.suitSectionTimerText.SetActive(false);
+                SuitSectionBlock.instance.DestroyBlock();
+
+                PlayerUI.instance.suitInteract = true;
+                PlayerUI.instance.suitCollect1.SetActive(true);
             }
         }
     }
@@ -339,6 +352,20 @@ public class Player : MonoBehaviour
         //Debug.Log(gameObject.name + " Exit " + collision.gameObject.name);
 
         onFloor = false; //Once player is off an object they are no longer touching floor
+    }
+
+    /// <summary>
+    /// Trigger when exiting an object
+    /// </summary>
+    /// <param name="collision"></param>
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.tag == "MonitorTrigger" && GameManager.gameManager.inPowerPuzzle) //If leaving main monitor in power puzzle, hide screen
+        {
+            Debug.Log("Too far from monitor");
+            PlayerUI.instance.powerPuzzlePage.SetActive(false);
+            GameManager.gameManager.inPowerPuzzle = false;
+        }
     }
 
     /// <summary>
@@ -379,11 +406,11 @@ public class Player : MonoBehaviour
 
         PlayerUI.instance.monitorInteract = true;
 
-        if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.powerPuzzle != true) //If suit section started and puzzle not completed, tell to divert power
+        if (GameManager.gameManager.suitSectionStart && GameManager.gameManager.inPowerPuzzle != true) //If suit section started and not in puzzle, tell to divert power
         {
             PlayerUI.instance.powerPuzzle1.SetActive(true);
         }
-        else if (GameManager.gameManager.captainCard) //If have the captain's card, start cutscene 1
+        else if (GameManager.gameManager.captainCard && GameManager.gameManager.suitSectionStart != true) //If have the captain's card and not in suit section, start cutscene 1
         {
             PlayerUI.instance.monitorYes.SetActive(true);
         }
