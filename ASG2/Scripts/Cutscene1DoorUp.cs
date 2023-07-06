@@ -32,6 +32,7 @@ public class Cutscene1DoorUp : MonoBehaviour
     {
         Debug.Log("Cutscene Door Up Opening");
         GetComponent<Animator>().SetBool("isTextDone", true);
+        Audio.instance.door.Play();
     }
 
     // Start is called before the first frame update

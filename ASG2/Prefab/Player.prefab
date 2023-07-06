@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 453009301247626956}
   - component: {fileID: 453009301247626954}
   - component: {fileID: 453009301247626955}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2622793105510147575}
   - component: {fileID: 2622793105515126409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SK_Soldier_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2622793105510215797}
   - component: {fileID: 2622793105515059319}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SK_Soldier_Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 2622793105519256713}
   - component: {fileID: 2622793105519256712}
   - component: {fileID: 2622793105519256727}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Space_Soldier_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.1, z: 1}
+  m_Size: {x: 1, y: 2.2, z: 1}
   m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!23 &2622793105519256727
 MeshRenderer:
@@ -377,7 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2622793105510144901}
   - component: {fileID: 2622793105515058199}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SK_Soldier_Torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 453009302277055062}
   - component: {fileID: 453009302277055063}
   - component: {fileID: 253033714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 2685778674908713963}
   - component: {fileID: 4508321556058497572}
   - component: {fileID: 4125120353941920860}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

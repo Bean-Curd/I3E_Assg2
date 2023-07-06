@@ -29,10 +29,18 @@ public class ASG2_StartPage : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
     }
 
+    /// <summary>
+    /// When interface is clicked
+    /// </summary>
+    public void ClickUI()
+    {
+        Audio.instance.button.Play();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        Audio.instance.indoorAmbience.Play();
     }
 
     /// <summary>

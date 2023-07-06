@@ -7,6 +7,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; //For managing scenes
 using UnityEngine.UI; //For the UI 
 using TMPro; //For TextMeshPro
 
@@ -69,7 +70,14 @@ public class ASG2_EnergyBar : MonoBehaviour
         {
             if (currentEnergy - amount >= 0) //If there is enough energy to sprint, deduct the energy required to sprint
             {
-                Player.instance.moveSpeed = 8f; //Increase movement speed if player can sprint
+                if (SceneManager.GetActiveScene().buildIndex == 3) //Increase speed in outdoor area
+                {
+                    Player.instance.moveSpeed = 50f; //Increase movement speed if player can sprint
+                }
+                else
+                {
+                    Player.instance.moveSpeed = 8f; //Increase movement speed if player can sprint
+                }
                 currentEnergy -= amount;
                 energyBar.value = currentEnergy;
 
@@ -82,7 +90,14 @@ public class ASG2_EnergyBar : MonoBehaviour
             }
             else
             {
-                Player.instance.moveSpeed = 4f; //Reset movement speed if player is out of energy
+                if (SceneManager.GetActiveScene().buildIndex == 3) //Increase speed in outdoor area
+                {
+                    Player.instance.moveSpeed = 25f; //Increase movement speed if player can sprint
+                }
+                else
+                {
+                    Player.instance.moveSpeed = 4f; //Increase movement speed if player can sprint
+                }
             }
         }
     }

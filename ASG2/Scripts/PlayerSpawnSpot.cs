@@ -1,7 +1,7 @@
 /*
  * Author: Ashley Goh Yu Ting
  * Date: 24/06/2023
- * Description: I3E/STLD Assignment 2 - Player Spawn Location (Ship Control Room)
+ * Description: I3E/STLD Assignment 2 - Player Spawn Location
  */
 
 using System.Collections;

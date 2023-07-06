@@ -14,6 +14,11 @@ using UnityEngine.SceneManagement; //For managing scenes
 public class PlayerUI : MonoBehaviour
 {
     /// <summary>
+    /// The end
+    /// </summary>
+    public GameObject finalCutscene;
+
+    /// <summary>
     /// Loading Screen
     /// </summary>
     public GameObject loadingScreen;
@@ -85,7 +90,12 @@ public class PlayerUI : MonoBehaviour
     /// <summary>
     /// Text that appears for locked weapon door
     /// </summary>
-    public GameObject weapon1;
+    public GameObject weaponDoor1;
+    /// <summary>
+    /// Text that appears for unlocked weapon door
+    /// </summary>
+    public GameObject weaponDoor2;
+
 
     /// <summary>
     /// When approaching Elena's body
@@ -276,6 +286,115 @@ public class PlayerUI : MonoBehaviour
     /// Collecting suit dialogue 1
     /// </summary>
     public GameObject suitCollect1;
+    /// <summary>
+    /// Collected Suit UI
+    /// </summary>
+    public GameObject suitUI;
+
+    /// <summary>
+    /// When approaching before weapons area is unlocked blocks
+    /// </summary>
+    public bool beforeWeaponsBlockInteract = false;
+    /// <summary>
+    /// For before weapons blocks
+    /// </summary>
+    public GameObject beforeWeaponsBlock;
+
+    /// <summary>
+    /// When approaching Jose's body
+    /// </summary>
+    public bool joseInteract = false;
+    /// <summary>
+    /// Jose dialogue
+    /// </summary>
+    public GameObject jose1;
+
+    /// <summary>
+    /// When collected Weapons' card
+    /// </summary>
+    public bool weaponInteract = false;
+    /// <summary>
+    /// Weapons' card dialogue 1
+    /// </summary>
+    public GameObject weapon1;
+    /// <summary>
+    /// Weapons' card dialogue 2
+    /// </summary>
+    public GameObject weapon2;
+    /// <summary>
+    /// Clicks for Weapons' card 
+    /// </summary>
+    private int weaponClicks;
+    /// <summary>
+    /// Weapons' card kit symbol
+    /// </summary>
+    public GameObject weaponCard;
+
+    /// <summary>
+    /// When collected c4
+    /// </summary>
+    public bool c4Interact = false;
+    /// <summary>
+    /// C4 dialogue 1
+    /// </summary>
+    public GameObject c41;
+    /// <summary>
+    /// C4 symbol
+    /// </summary>
+    public GameObject c4;
+    /// <summary>
+    /// C4 symbol overlay
+    /// </summary>
+    public GameObject c4Overlay;
+
+    /// <summary>
+    /// When approaching escape pod
+    /// </summary>
+    public bool escapePodInteract = false;
+    /// <summary>
+    /// When you didn't use the c4 yet
+    /// </summary>
+    public GameObject escapePodNo;
+    /// <summary>
+    /// When you used the c4
+    /// </summary>
+    public GameObject escapePodYes;
+
+    /// <summary>
+    /// When approaching exit/main hatch terminal
+    /// </summary>
+    public bool exitInteract = false;
+    /// <summary>
+    /// When c4 not obtained
+    /// </summary>
+    public GameObject exitNo;
+    /// <summary>
+    /// When c4 obtained
+    /// </summary>
+    public GameObject exitYes;
+
+    /// <summary>
+    /// When approaching rocks
+    /// </summary>
+    public bool rockInteract = false;
+    /// <summary>
+    /// When you have the c4
+    /// </summary>
+    public GameObject rockYes;
+
+    /// <summary>
+    /// Cutscene 2 dialogue 1
+    /// </summary>
+    public GameObject cutscene21;
+
+    /// <summary>
+    /// To hide after Cutscene 2 dialogue 1
+    /// </summary>
+    public bool afterCutscene2Interact = false;
+    /// <summary>
+    /// After Cutscene 2 dialogue 1
+    /// </summary>
+    public GameObject afterCutscene21;
 
     /// <summary>
     /// So it can be accessed by other scripts
@@ -300,6 +419,7 @@ public class PlayerUI : MonoBehaviour
         captainClicks = 1;
         cutscene1Clicks = 1;
         afterCutscene1Clicks = 1;
+        weaponClicks = 1;
         introDone = false;
     }
 
@@ -325,7 +445,20 @@ public class PlayerUI : MonoBehaviour
         {
             if (GameManager.gameManager.pause != true) //If not paused, can change text
             {
-                if (GameManager.gameManager.firstCutscene && SceneManager.GetActiveScene().buildIndex == 1) //For dialogue after scene change back to spaceship after cutscene 1
+                if (GameManager.gameManager.secondCutscene && SceneManager.GetActiveScene().buildIndex == 3) //For dialogue after scene change back to external area after cutscene 2
+                {
+                    afterCutscene21.SetActive(false);
+                    afterCutscene2Interact = true;
+                }
+
+                if (GameManager.gameManager.secondCutscene && SceneManager.GetActiveScene().buildIndex == 4) //For second cutscene dialogue after scene change to cutscene 2 scene
+                {
+                    cutscene21.SetActive(false);
+                    voidScreen.SetActive(false);
+                    Cutscene2Rocks.instance.Cutscene2RocksSinking();
+                }
+
+                if (GameManager.gameManager.firstCutscene && SceneManager.GetActiveScene().buildIndex == 1 && GameManager.gameManager.suitObtained != true) //For dialogue after scene change back to spaceship after cutscene 1
                 {
                     afterCutscene11.SetActive(false);
                     GameManager.gameManager.suitSectionStart = false;
@@ -335,6 +468,8 @@ public class PlayerUI : MonoBehaviour
                     if (afterCutscene1Clicks > 3 && GameManager.gameManager.suitObtained != true)
                     {
                         afterCutscene13.SetActive(false);
+                        Audio.instance.indoorAmbience.Stop();
+                        Audio.instance.wind.Play();
                         GameManager.gameManager.suitSectionStart = true;
                     }
                     else if (afterCutscene1Clicks == 3)
@@ -409,9 +544,10 @@ public class PlayerUI : MonoBehaviour
                     emergency1.SetActive(false);
                 }
 
-                if (weaponDoorInteract) //If approaching locked weapon door
+                if (weaponDoorInteract) //If approaching weapon door
                 {
-                    weapon1.SetActive(false);
+                    weaponDoor1.SetActive(false);
+                    weaponDoor2.SetActive(false);
                 }
 
                 if (elenaInteract) //If done approaching elena's body
@@ -452,7 +588,7 @@ public class PlayerUI : MonoBehaviour
 
                     if (GameManager.gameManager.healLimit) //If there is a heal limit, show warning
                     {
-                        healLimitText.text = "[" + Player.instance.healCount + " Heals Left]"; //Change the text to the number
+                        healLimitText.text = "[" + GameManager.gameManager.healCount + " Heals Left]"; //Change the text to the number
 
                         if (healLimitClicks >= 1 && (healLimitClicks % 2) == 1) //If odd number that is not 1
                         {
@@ -529,6 +665,81 @@ public class PlayerUI : MonoBehaviour
                 if (GameManager.gameManager.powerPuzzleDone) //If done with power puzzle
                 {
                     puzzleCompleted1.SetActive(false);
+                }
+
+                if (beforeWeaponsBlockInteract) //If done approaching before weapons block
+                {
+                    beforeWeaponsBlock.SetActive(false);
+                }
+
+                if (joseInteract) //If done approaching Jose's body
+                {
+                    jose1.SetActive(false);
+                }
+
+                if (weaponInteract) //If picked up Weapons' card
+                {
+                    weapon1.SetActive(false);
+                    weaponClicks += 1;
+
+                    if (weaponClicks > 2)
+                    {
+                        weapon2.SetActive(false);
+                    }
+                    else if (weaponClicks == 2)
+                    {
+                        weapon2.SetActive(true);
+                    }
+                }
+
+                if (c4Interact) //If picked up C4
+                {
+                    c41.SetActive(false);
+                }
+
+                if (escapePodInteract) //If done approaching escape pod
+                {
+                    if (GameManager.gameManager.secondCutscene && escapePodNo.activeSelf != true) //If used c4, allow exit
+                    {
+                        escapePodYes.SetActive(false);
+                        escapePodInteract = false;
+                        GameManager.gameManager.LoadingScreen();
+
+                        Debug.Log("Final Cutscene");
+
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 4); //Moves to the final cutscene
+                    }
+                    else if (GameManager.gameManager.secondCutscene != true) //If not used c4, says escape pod is blocked
+                    {
+                        escapePodNo.SetActive(false);
+                        escapePodInteract = false;
+                    }
+                }
+
+                if (exitInteract) //If done approaching exit/main hatch terminal
+                {
+                    if (GameManager.gameManager.c4) //If obtained c4, allow exit
+                    {
+                        exitYes.SetActive(false);
+                        exitInteract = false;
+                        GameManager.gameManager.LoadingScreen();
+
+                        Debug.Log("Exiting Ship");
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2); //Moves to the next next scene
+                    }
+                    else if (GameManager.gameManager.c4 != true) //If not obtained c4, deny exit
+                    {
+                        exitNo.SetActive(false);
+                        exitInteract = false;
+                    }
+                }
+
+                if (rockInteract) //If done approaching pile of rocks
+                {
+                    rockYes.SetActive(false);
+                    rockInteract = false;
+                    GameManager.gameManager.LoadingScreen();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //Moves to the next scene
                 }
             }
         }

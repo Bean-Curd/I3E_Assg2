@@ -1,7 +1,7 @@
 /*
  * Author: Ashley Goh Yu Ting
  * Date: 29/06/2023
- * Description: I3E/STLD Assignment 2 - Block the Living Quarters/Escape Pod during Suit Section
+ * Description: I3E/STLD Assignment 2 - Block the Main Hatch/Living Quarters/Escape Pod during Suit Section
  */
 
 using System.Collections;
@@ -15,7 +15,7 @@ public class SuitSectionBlock : MonoBehaviour
     /// </summary>
     public GameObject livingSuitBlock;
     /// <summary>
-    /// For suit section escape block
+    /// For suit section escape pod block
     /// </summary>
     public GameObject escapeSuitBlock;
     /// <summary>

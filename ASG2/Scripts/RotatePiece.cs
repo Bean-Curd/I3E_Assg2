@@ -15,6 +15,7 @@ public class RotatePiece : MonoBehaviour
     /// </summary>
     public void Rotate()
     {
+        Audio.instance.turningPuzzle.Play();
         transform.Rotate(Vector3.forward * -90);
     }
 

@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
     public GameObject canvasPrefab;
 
     /// <summary>
+    /// Audio prefab
+    /// </summary>
+    public GameObject audioPrefab;
+
+    /// <summary>
     /// Current player
     /// </summary>
     private GameObject activePlayer;
@@ -54,14 +59,34 @@ public class GameManager : MonoBehaviour
     private GameObject activeCanvas;
 
     /// <summary>
-    /// Player spawn 1 (Control room)
+    /// Current audio
+    /// </summary>
+    private GameObject activeAudio;
+
+    /// <summary>
+    /// Player spawn 1 
     /// </summary>
     private GameObject spawn1;
-
     /// <summary>
     /// Spawn 1 Location
     /// </summary>
     private Vector3 spawn1Location;
+    /// <summary>
+    /// Player spawn 2
+    /// </summary>
+    private GameObject spawn2;
+    /// <summary>
+    /// Spawn 2 Location
+    /// </summary>
+    private Vector3 spawn2Location;
+    /// <summary>
+    /// Player spawn 3
+    /// </summary>
+    private GameObject spawn3;
+    /// <summary>
+    /// Spawn 3 Location
+    /// </summary>
+    private Vector3 spawn3Location;
 
     /// <summary>
     /// Scene
@@ -85,6 +110,18 @@ public class GameManager : MonoBehaviour
     /// Game Object Array to destroy display suit items
     /// </summary>
     private GameObject[] destroyDisplaySuitArray;
+    /// <summary>
+    /// Game Object Array to destroy weapon doors
+    /// </summary>
+    private GameObject[] weaponDoorArray;
+    /// <summary>
+    /// Game Object Array to destroy rocks
+    /// </summary>
+    private GameObject[] rockArray;
+    /// <summary>
+    /// Game Object Array to destroy collectibles
+    /// </summary>
+    private GameObject[] collectiblesArray;
 
     /// <summary>
     /// First time entering the spaceship for deducting HP
@@ -126,6 +163,14 @@ public class GameManager : MonoBehaviour
     /// First time seeing C4 Cutscene (Cutscene2)
     /// </summary>
     public bool secondCutscene;
+    /// <summary>
+    /// If done returning to spaceship after second cutscene (So that player respawns at ship on reentry)
+    /// </summary>
+    public bool parkourDone;
+    /// <summary>
+    /// Disable Waste Damage (Skip Parkour)
+    /// </summary>
+    public bool disableWasteDamage;
 
 
     // For difficulty variables
@@ -138,9 +183,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public float windTimer; 
     /// <summary>
-    /// Limits heals at 5 times a playthrough
+    /// Limits heals at 3 times a playthrough
     /// </summary>
-    public bool healLimit; 
+    public bool healLimit;
+    /// <summary>
+    /// Number of times player can heal
+    /// </summary>
+    public int healCount = 3;
 
     //Items obtained
     /// <summary>
@@ -200,6 +249,8 @@ public class GameManager : MonoBehaviour
             inPowerPuzzle = false;
             powerPuzzleDone = false;
             secondCutscene = false;
+            parkourDone = false;
+            disableWasteDamage = false;
             firstAidKit = false;
             captainCard = false;
             suitObtained = false;
@@ -236,6 +287,8 @@ public class GameManager : MonoBehaviour
             inPowerPuzzle = false;
             powerPuzzleDone = false;
             secondCutscene = false;
+            parkourDone = false;
+            disableWasteDamage = false;
             firstAidKit = false;
             captainCard = false;
             suitObtained = false;
@@ -267,11 +320,10 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+
         activePlayer = GameObject.FindGameObjectWithTag("Player");
         activeCanvas = GameObject.FindGameObjectWithTag("Canvas");
-
-        spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
-        spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
+        activeCanvas = GameObject.FindGameObjectWithTag("Audio");
 
         SceneManager.activeSceneChanged += SpawnPlayerOnSceneLoad;
     }
@@ -281,6 +333,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SpawnPlayerOnSceneLoad(Scene currentScene, Scene nextScene)
     {
+        spawn1 = GameObject.FindGameObjectWithTag("Spawn1");
+        spawn1Location = new Vector3(spawn1.transform.position.x, spawn1.transform.position.y, spawn1.transform.position.z);
+
+        spawn2 = GameObject.FindGameObjectWithTag("Spawn2");
+        spawn2Location = new Vector3(spawn2.transform.position.x, spawn2.transform.position.y, spawn2.transform.position.z);
+
         buildIndex = nextScene.buildIndex;
         Debug.Log(activePlayer);
 
@@ -288,27 +346,86 @@ public class GameManager : MonoBehaviour
         {
             Destroy(activePlayer);
             Destroy(activeCanvas);
+            Destroy(activeAudio);
             Debug.Log("Original player destroyed: " + activePlayer);
             activePlayer = null;
             activeCanvas = null;
+            activeAudio = null;
         }
 
         if (activePlayer == null && buildIndex != 0) //If there is no player and not in start menu, spawn player prefab at spawn point
         {
-            if (buildIndex == 2) //In specific scenes, have specific rotations
+            activeCanvas = Instantiate(canvasPrefab);
+            activeAudio = Instantiate(audioPrefab);
+
+            if (buildIndex == 5) //In specific scenes, have specific rotations
             {
+                Audio.instance.indoorAmbience.Stop();
+                Audio.instance.wind.Stop();
+                Audio.instance.outdoorAmbience.Play();
+
+                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 140, 0)));
+            }
+            if (buildIndex == 4) //In specific scenes, have specific rotations
+            {
+                Audio.instance.indoorAmbience.Stop();
+                Audio.instance.wind.Stop();
+                Audio.instance.outdoorAmbience.Play();
+
+                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 220, 0)));
+            }
+            else if (buildIndex == 3) //In specific scenes, have specific rotations
+            {
+                Audio.instance.indoorAmbience.Stop();
+                Audio.instance.wind.Stop();
+                Audio.instance.outdoorAmbience.Play();
+                
+                if (secondCutscene && parkourDone)  //If entering spaceship after seeing second cutscene, respawn outside ship in outside area
+                {
+                    activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 0, 0)));
+                } 
+                else if (secondCutscene) //If have used c4, spawn on other side
+                {
+                    activePlayer = Instantiate(playerPrefab, spawn2Location, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
+                else
+                {
+                    activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
+            }
+            else if (buildIndex == 2) //In specific scenes, have specific rotations
+            {
+                Audio.instance.outdoorAmbience.Stop();
+                Audio.instance.wind.Stop();
+                Audio.instance.indoorAmbience.Play();
+
                 activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 150, 0)));
             }
             else if (buildIndex == 1) //In specific scenes, have specific rotations
             {
-                activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 180, 0)));
+                Audio.instance.outdoorAmbience.Stop();
+                Audio.instance.wind.Stop();
+                Audio.instance.indoorAmbience.Play();
+
+                if (secondCutscene) //If entering spaceship after seeing second cutscene, respawn outside ship in outside area
+                {
+                    parkourDone = true;
+                }
+
+                if (c4) //If have c4, spawn below at main hatch
+                {
+                    activePlayer = Instantiate(playerPrefab, spawn2Location, Quaternion.Euler(new Vector3(0, 0, 0)));
+                }
+                else
+                {
+                    activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 180, 0)));
+                }
             }
             else
             {
                 //activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.identity);
             }
 
-            activeCanvas = Instantiate(canvasPrefab);
             Debug.Log("Active player spawned: " + activePlayer);
         } 
 
@@ -350,7 +467,15 @@ public class GameManager : MonoBehaviour
             dead = false;
         }
 
-        PlayerUI.instance.loadingScreen.SetActive(true);
+        if (SceneManager.GetActiveScene().buildIndex == 5) //If in final cutscene
+        {
+            PlayerUI.instance.finalCutscene.SetActive(true);
+        }
+        else
+        {
+            PlayerUI.instance.loadingScreen.SetActive(true);
+        }
+
         PlayerUI.instance.voidScreen.SetActive(true);
 
         loadingScreenWait = StartCoroutine(WaitForLoading());
@@ -368,12 +493,21 @@ public class GameManager : MonoBehaviour
 
         Destroy(activePlayer); //Destroy player and canvas, respawn them at spawn location
         Destroy(activeCanvas);
+        Destroy(activeAudio);
         Debug.Log("Original player destroyed: " + activePlayer);
         activePlayer = null;
         activeCanvas = null;
+        activeAudio = null;
+
+        activeCanvas = Instantiate(canvasPrefab);
+        activeAudio = Instantiate(audioPrefab);
 
         if (buildIndex == 1) //In specific scenes, have specific rotations/resets
         {
+            Audio.instance.outdoorAmbience.Stop();
+            Audio.instance.wind.Stop();
+            Audio.instance.indoorAmbience.Play();
+
             activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 180, 0)));
             suitSectionStart = true;
             hpTickDelay = false;
@@ -382,8 +516,15 @@ public class GameManager : MonoBehaviour
             timerTemp = windTimer;
             PowerPuzzle.instance.PuzzleStart(); //Reset puzzle
         }
+        else if (buildIndex == 3) //In specific scenes, have specific rotations/resets
+        {
+            Audio.instance.indoorAmbience.Stop();
+            Audio.instance.wind.Stop();
+            Audio.instance.outdoorAmbience.Play();
 
-        activeCanvas = Instantiate(canvasPrefab);
+            activePlayer = Instantiate(playerPrefab, spawn1Location, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+
         Debug.Log("Active player spawned: " + activePlayer);
     }
 
@@ -402,6 +543,8 @@ public class GameManager : MonoBehaviour
         inPowerPuzzle = false;
         powerPuzzleDone = false;
         secondCutscene = false;
+        parkourDone = false;
+        disableWasteDamage = false;
         firstAidKit = false;
         captainCard = false;
         suitObtained = false;
@@ -430,6 +573,7 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
+            Audio.instance.damage.Play();
             ASG2_HealthBar.instance.Damage(300); //300 as in 3.00
 
         }
@@ -437,6 +581,7 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
+            Audio.instance.damage.Play();
             ASG2_HealthBar.instance.Damage(100); //100 as in 1.00
         }
 
@@ -507,12 +652,53 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroy weapon doors
+    /// </summary>
+    public void DestroyWeaponDoors()
+    {
+        weaponDoorArray = GameObject.FindGameObjectsWithTag("WeaponsDoor");
+
+        foreach (GameObject gameObject in weaponDoorArray)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Destroy rocks
+    /// </summary>
+    void C4Rocks()
+    {
+        rockArray = GameObject.FindGameObjectsWithTag("Rocks");
+
+        foreach (GameObject gameObject in rockArray)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Kill collectibles
+    /// </summary>
+    void KillCollectibles()
+    {
+        collectiblesArray = GameObject.FindGameObjectsWithTag("Collectible");
+
+        foreach (GameObject gameObject in collectiblesArray)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1 && firstAidKit != true && initialDamage != true) //If loading into the spaceship for the first time (without the First-Aid Kit), reduce HP to 40
         {
             ASG2_HealthBar.instance.Damage(6000);
+            Audio.instance.indoorAmbience.Play();
+            Audio.instance.damage.Play();
             PlayerUI.instance.intro1.SetActive(true); //Show 1st dialogue
             initialDamage = true;
 
@@ -540,13 +726,41 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             Player.instance.rotationSpeed = 0.25f;
-            Player.instance.moveSpeed = 4.0f;
+            if (SceneManager.GetActiveScene().buildIndex == 3) //Increase speed in outdoor area
+            {
+                Player.instance.moveSpeed = 25f; //Increase movement speed if player can sprint
+            }
+            else
+            {
+                Player.instance.moveSpeed = 4f; //Increase movement speed if player can sprint
+            }
         }
 
-        if (SceneManager.GetActiveScene().buildIndex == 2 ) //If in cutscene, stop player movement
+        if (SceneManager.GetActiveScene().buildIndex == 2 || SceneManager.GetActiveScene().buildIndex == 4 || SceneManager.GetActiveScene().buildIndex == 5) //If in cutscene, stop player movement
         {
             Player.instance.rotationSpeed = 0.00f;
             Player.instance.moveSpeed = 0.00f;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 4 && secondCutscene != true) //When entering 2nd cutscene
+        {
+            Debug.Log("Starting Cutscene 2: C4");
+            PlayerUI.instance.voidScreen.SetActive(true);
+            PlayerUI.instance.cutscene21.SetActive(true);
+            secondCutscene = true;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 3 && secondCutscene) //When entering outside after cutscene, keep rocks destroyed
+        {
+            C4Rocks();
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 3 && secondCutscene && PlayerUI.instance.afterCutscene2Interact != true) //When entering external area after 2nd cutscene
+        {
+            Debug.Log("Cutscene 2: C4 End");
+            C4Rocks();
+
+            PlayerUI.instance.afterCutscene21.SetActive(true);
         }
 
         if (SceneManager.GetActiveScene().buildIndex == 2 && firstCutscene != true) //When entering 1st cutscene
@@ -557,17 +771,31 @@ public class GameManager : MonoBehaviour
             firstCutscene = true;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex == 1 && firstCutscene && PlayerUI.instance.afterCutscene1Interact != true) //When entering spaceship after 1st cutscene
+
+        if (SceneManager.GetActiveScene().buildIndex == 1 && c4) //When entering spaceship after c4 obtained, lift protocol and keep objects destroyed
         {
-            Debug.Log("Cutscene 1: Emergency Lockdown Lifted End");
             EmergencyLockdownLifted();
             ChangeRedLights();
+            DestroyWeaponDoors();
+            DestroySuitItems();
+            KillCollectibles();
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 1 && firstCutscene) //When entering spaceship after 1st cutscene, lift emergency protocol
+        {
+            EmergencyLockdownLifted();
+            ChangeRedLights();
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 1 && firstCutscene && PlayerUI.instance.afterCutscene1Interact != true && suitObtained != true) //When entering spaceship after 1st cutscene, and before outside area is unlocked
+        {
+            Debug.Log("Cutscene 1: Emergency Lockdown Lifted End");
 
             SuitSectionBlock.instance.TriggerBlock();
             PlayerUI.instance.afterCutscene11.SetActive(true);
         }
 
-        if (firstCutscene && SceneManager.GetActiveScene().buildIndex == 1 && PlayerUI.instance.afterCutscene1Clicks <= 3)
+        if (firstCutscene && SceneManager.GetActiveScene().buildIndex == 1 && PlayerUI.instance.afterCutscene1Clicks <= 3 && c4 != true)
         {
             Debug.Log("Lock player movement");
             Time.timeScale = 0;

@@ -296,7 +296,7 @@ public class PowerPuzzle : MonoBehaviour
             //If pieces are in the correct places during power puzzle
             if (correctR1C1 && correctR2C1 && correctR3C1 && correctR4C1 && correctR5C1)
             {
-                Debug.Log("Col1 clear");
+                //Debug.Log("Col1 clear");
                 correctCol1 = true;
             }
             else
@@ -306,7 +306,7 @@ public class PowerPuzzle : MonoBehaviour
 
             if (correctR1C2 && correctR2C2 && correctR3C2 && correctR4C2 && correctR5C2)
             {
-                Debug.Log("Col2 clear");
+                //Debug.Log("Col2 clear");
                 correctCol2 = true;
             }
             else
@@ -316,7 +316,7 @@ public class PowerPuzzle : MonoBehaviour
 
             if (correctR1C3 && correctR2C3 && correctR3C3 && correctR4C3 && correctR5C3)
             {
-                Debug.Log("Col3 clear");
+                //Debug.Log("Col3 clear");
                 correctCol3 = true;
             }
             else
@@ -326,7 +326,7 @@ public class PowerPuzzle : MonoBehaviour
 
             if (correctR1C4 && correctR2C4 && correctR3C4 && correctR4C4 && correctR5C4)
             {
-                Debug.Log("Col4 clear");
+                //Debug.Log("Col4 clear");
                 correctCol4 = true;
             }
             else
@@ -336,7 +336,7 @@ public class PowerPuzzle : MonoBehaviour
 
             if (correctR1C5 && correctR2C5 && correctR3C5 && correctR4C5 && correctR5C5)
             {
-                Debug.Log("Col5 clear");
+                //Debug.Log("Col5 clear");
                 correctCol5 = true;
             }
             else
@@ -349,6 +349,7 @@ public class PowerPuzzle : MonoBehaviour
                 Debug.Log("YAY NICE GOOD JOB :D");
                 PlayerUI.instance.powerPuzzlePage.SetActive(false);
                 PlayerUI.instance.puzzleCompleted1.SetActive(true);
+                Audio.instance.puzzleCompleted.Play();
                 GameManager.gameManager.inPowerPuzzle = false;
                 GameManager.gameManager.powerPuzzleDone = true;
             }
@@ -356,12 +357,10 @@ public class PowerPuzzle : MonoBehaviour
             if (R1C1.GetComponent<RectTransform>().eulerAngles.z == 0)
             {
                 correctR1C1 = true;
-                Debug.Log("True" + R1C1.GetComponent<RectTransform>().eulerAngles.z);
             }
             else
             {
                 correctR1C1 = false;
-                Debug.Log("Wrong" + R1C1.GetComponent<RectTransform>().eulerAngles.z);
             }
             if (R2C1.GetComponent<RectTransform>().eulerAngles.z == 0)
             {
@@ -437,7 +436,7 @@ public class PowerPuzzle : MonoBehaviour
                 correctR5C2 = false;
             }
 
-            if (R1C3.GetComponent<RectTransform>().eulerAngles.z > -90 && R1C3.GetComponent<RectTransform>().eulerAngles.z < 90) //0 doesn't work and i'm not sure how to fix float point imprecision
+            if (R1C3.GetComponent<RectTransform>().eulerAngles.z > -10 && R1C3.GetComponent<RectTransform>().eulerAngles.z < 10) //0 doesn't work and i'm not sure how to fix float point imprecision
             {
                 correctR1C3 = true;
             }
@@ -445,7 +444,7 @@ public class PowerPuzzle : MonoBehaviour
             {
                 correctR1C3 = false;
             }
-            if (R2C3.GetComponent<RectTransform>().eulerAngles.z > -90 && R2C3.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R2C3.GetComponent<RectTransform>().eulerAngles.z > -10 && R2C3.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR2C3 = true;
             }
@@ -453,7 +452,7 @@ public class PowerPuzzle : MonoBehaviour
             {
                 correctR2C3 = false;
             }
-            if (R3C3.GetComponent<RectTransform>().eulerAngles.z > -90 && R3C3.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R3C3.GetComponent<RectTransform>().eulerAngles.z > -10 && R3C3.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR3C3 = true;
             }
@@ -478,7 +477,7 @@ public class PowerPuzzle : MonoBehaviour
                 correctR5C3 = false;
             }
 
-            if (R1C4.GetComponent<RectTransform>().eulerAngles.z > -90 && R1C4.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R1C4.GetComponent<RectTransform>().eulerAngles.z > -10 && R1C4.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR1C4 = true;
             }
@@ -494,7 +493,7 @@ public class PowerPuzzle : MonoBehaviour
             {
                 correctR2C4 = false;
             }
-            if (R3C4.GetComponent<RectTransform>().eulerAngles.z > -90 && R3C4.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R3C4.GetComponent<RectTransform>().eulerAngles.z > -10 && R3C4.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR3C4 = true;
             }
@@ -527,7 +526,7 @@ public class PowerPuzzle : MonoBehaviour
             {
                 correctR1C5 = false;
             }
-            if (R2C5.GetComponent<RectTransform>().eulerAngles.z > -90 && R2C5.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R2C5.GetComponent<RectTransform>().eulerAngles.z > -10 && R2C5.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR2C5 = true;
             }
@@ -535,7 +534,7 @@ public class PowerPuzzle : MonoBehaviour
             {
                 correctR2C5 = false;
             }
-            if (R3C5.GetComponent<RectTransform>().eulerAngles.z > -90 && R3C5.GetComponent<RectTransform>().eulerAngles.z < 90)
+            if (R3C5.GetComponent<RectTransform>().eulerAngles.z > -10 && R3C5.GetComponent<RectTransform>().eulerAngles.z < 10)
             {
                 correctR3C5 = true;
             }
